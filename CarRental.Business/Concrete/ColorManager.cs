@@ -32,6 +32,11 @@ namespace CarRental.Business.Concrete
             throw new NotImplementedException();
         }
 
+        public IDataResult<Color> GetByID(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
         public IResult Update(Color entity)
         {
             throw new NotImplementedException();

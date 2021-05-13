@@ -1,9 +1,8 @@
 ﻿using CarRental.Core.Utilities.Results;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
-using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace CarRental.Business.Abstract
 {

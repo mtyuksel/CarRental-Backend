@@ -6,6 +6,7 @@ namespace CarRental.Business.Abstract
     public interface IServiceBase<T>
     {
         IDataResult<List<T>> GetAll();
+        IDataResult<T> GetByID(int ID);
         IResult Add(T entity);
         IResult Update(T entity);
         IResult DeleteByID(int ID);

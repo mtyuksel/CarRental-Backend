@@ -2,7 +2,7 @@
 
 namespace CarRental.Business.Abstract
 {
-    public interface IColorService : IServiceBase<Color>
+    public interface ICustomerService : IServiceBase<Customer>
     {
     }
 }

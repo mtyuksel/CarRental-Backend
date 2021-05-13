@@ -38,17 +38,29 @@ namespace CarRental.Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
+            if (DateTime.Now.Hour == 15)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+        }
+
+        public IDataResult<Car> GetByID(int ID)
+        {
             throw new NotImplementedException();
         }
 
         public IDataResult<List<CarDetailDTO>> GetCarDetails()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());
         }
 
         public IResult Update(Car entity)
         {
-            throw new NotImplementedException();
+            _carDal.Update(entity);
+
+            return new SuccessResult();
         }
     }
 }

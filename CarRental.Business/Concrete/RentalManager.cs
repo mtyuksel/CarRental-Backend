@@ -1,5 +1,6 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Core.Utilities.Results;
+using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,16 @@ using System.Text;
 
 namespace CarRental.Business.Concrete
 {
-    public class BrandManager : IBrandService
+    public class RentalManager : IRentalService
     {
-        public IResult Add(Brand entity)
+        private IRentalDal _rentalDal;
+
+        public RentalManager(IRentalDal rentalDal)
+        {
+            this._rentalDal = rentalDal;
+        }
+
+        public IResult Add(Rental entity)
         {
             throw new NotImplementedException();
         }
@@ -19,17 +27,17 @@ namespace CarRental.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<Brand>> GetAll()
+        public IDataResult<List<Rental>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<Brand> GetByID(int ID)
+        public IDataResult<Rental> GetByID(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public IResult Update(Brand entity)
+        public IResult Update(Rental entity)
         {
             throw new NotImplementedException();
         }
