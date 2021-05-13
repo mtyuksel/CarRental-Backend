@@ -39,7 +39,7 @@ namespace CarRental.Business.Concrete
 
         public IDataResult<Customer> GetByID(int userID)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserID == userID))
+            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserID == userID));
         }
 
         public IResult Update(Customer customer)
