@@ -1,10 +1,11 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.Constants;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace CarRental.Business.Concrete
 {
@@ -17,29 +18,42 @@ namespace CarRental.Business.Concrete
             this._rentalDal = rentalDal;
         }
 
-        public IResult Add(Rental entity)
+        public IResult Add(Rental rental)
         {
-            throw new NotImplementedException();
+            var existRental = _rentalDal.GetAll(r => r.CarID == rental.CarID).OrderBy(r => r.RentDate).FirstOrDefault();
+
+            if (existRental == null || (existRental.ReturnDate != null && existRental.ReturnDate < DateTime.Now))
+            {
+                _rentalDal.Add(rental);
+
+                return new SuccessResult(Messages.SuccesfullyAdded);
+            }
+
+            return new ErrorResult(Messages.CarHasNotYetBeenReturned);
         }
 
-        public IResult DeleteByID(int ID)
+        public IResult Delete(Rental rental)
         {
-            throw new NotImplementedException();
+            _rentalDal.Delete(rental);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
         public IDataResult<Rental> GetByID(int ID)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.ID == ID));
         }
 
-        public IResult Update(Rental entity)
+        public IResult Update(Rental rental)
         {
-            throw new NotImplementedException();
+            _rentalDal.Update(rental);
+
+            return new SuccessResult(Messages.SuccesfullyUpdated);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace CarRental.Business.Abstract
     {
         IDataResult<List<T>> GetAll();
         IDataResult<T> GetByID(int ID);
-        IResult Add(T entity);
+        IResult Add(T entity); 
         IResult Update(T entity);
-        IResult DeleteByID(int ID);
+        IResult Delete(T entity);
     }
 }

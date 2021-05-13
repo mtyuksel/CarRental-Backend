@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.Constants;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -17,29 +18,35 @@ namespace CarRental.Business.Concrete
             this._customerDal = customerDal;
         }
 
-        public IResult Add(Customer entity)
+        public IResult Add(Customer customer)
         {
-            throw new NotImplementedException();
+            _customerDal.Add(customer);
+
+            return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
-        public IResult DeleteByID(int ID)
+        public IResult Delete(Customer customer)
         {
-            throw new NotImplementedException();
+            _customerDal.Delete(customer);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<Customer>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
-        public IDataResult<Customer> GetByID(int ID)
+        public IDataResult<Customer> GetByID(int userID)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserID == userID))
         }
 
-        public IResult Update(Customer entity)
+        public IResult Update(Customer customer)
         {
-            throw new NotImplementedException();
+            _customerDal.Update(customer);
+
+            return new SuccessResult(Messages.SuccesfullyUpdated);
         }
     }
 }

@@ -6,7 +6,7 @@ using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace CarRental.Business.Concrete
 {
@@ -25,15 +25,17 @@ namespace CarRental.Business.Concrete
             {
                 _carDal.Add(car);
 
-                return new SuccessResult(Messages.CarAdded);
+                return new SuccessResult(Messages.SuccesfullyAdded);
             }
 
             return new ErrorResult(Messages.CarNameAndPriceNotValid);
         }
 
-        public IResult DeleteByID(int ID)
+        public IResult Delete(Car car)
         {
-            throw new NotImplementedException();
+            _carDal.Delete(car);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -48,7 +50,7 @@ namespace CarRental.Business.Concrete
 
         public IDataResult<Car> GetByID(int ID)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.ID == ID));
         }
 
         public IDataResult<List<CarDetailDTO>> GetCarDetails()
@@ -56,11 +58,11 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());
         }
 
-        public IResult Update(Car entity)
+        public IResult Update(Car car)
         {
-            _carDal.Update(entity);
+            _carDal.Update(car);
 
-            return new SuccessResult();
+            return new SuccessResult(Messages.SuccesfullyUpdated);
         }
     }
 }

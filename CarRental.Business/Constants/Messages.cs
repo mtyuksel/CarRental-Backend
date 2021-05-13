@@ -17,6 +17,7 @@ namespace CarRental.Business.Constants
         #region Success Messages
         public static string SuccesfullyUpdated = "Successfully updated.";
         public static string SuccesfullyAdded = "Successfully added.";
+        public static string SuccesfullyDeleted = "Successfully deleted.";
         #endregion
 
         public static string MaintenanceTime = "The service is under maintenance. Please try again in 1 hour.";
