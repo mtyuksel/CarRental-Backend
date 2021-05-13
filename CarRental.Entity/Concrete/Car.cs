@@ -1,7 +1,6 @@
-﻿using CarRental.Entity.Abstract;
+﻿using CarRental.Core.Entity.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace CarRental.Entity.Concrete
 {

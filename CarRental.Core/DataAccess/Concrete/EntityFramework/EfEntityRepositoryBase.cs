@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CarRental.DataAccess.Abstract;
-using CarRental.Entity.Abstract;
+using CarRental.Core.DataAccess.Abstract;
+using CarRental.Core.Entity.Abstract;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarRental.DataAccess.Concrete.EntityFramework
+namespace CarRental.Core.DataAccess.Concrete.EntityFramework
 {
     public class EfEntityRepositoryBase<TContext, TEntity> : IEntityRepository<TEntity>
         where TContext : DbContext, new()
