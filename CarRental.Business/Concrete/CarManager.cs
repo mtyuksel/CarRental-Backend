@@ -1,4 +1,6 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.Constants;
+using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
@@ -17,46 +19,36 @@ namespace CarRental.Business.Concrete
             this._carDal = carDal;
         }
 
-        public bool Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.Name.Length > 2 && car.DailyPrice > 0)
             {
                 _carDal.Add(car);
 
-                return true;
+                return new SuccessResult(Messages.CarAdded);
             }
 
-            return false;
+            return new ErrorResult(Messages.CarNameAndPriceNotValid);
         }
 
-        public bool DeleteByID(int ID)
+        public IResult DeleteByID(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public Car GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Car entity)
+        public IDataResult<List<CarDetailDTO>> GetCarDetails()
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetCarsByColorID(int colorID)
+        public IResult Update(Car entity)
         {
-            return _carDal.GetAll(c => c.ColorID == colorID);
-        }
-
-        public List<Car> GetCarsByBrandID(int brandID)
-        {
-            return _carDal.GetAll(c => c.BrandID == brandID);
-        }
-
-        public List<CarDetailDTO> GetCarDetails()
-        {
-            return _carDal.GetCarDetails();
+            throw new NotImplementedException();
         }
     }
 }

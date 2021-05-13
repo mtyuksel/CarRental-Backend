@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System;
@@ -16,24 +17,22 @@ namespace CarRental.Business.Concrete
             this._colorDal = colorDal;
         }
 
-        public bool Add(Color entity)
-        {
-            _colorDal.Add(entity);
-
-            return true;
-        }
-
-        public bool DeleteByID(int ID)
+        public IResult Add(Color entity)
         {
             throw new NotImplementedException();
         }
 
-        public Color GetAll()
+        public IResult DeleteByID(int ID)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Color entity)
+        public IDataResult<List<Color>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult Update(Color entity)
         {
             throw new NotImplementedException();
         }

@@ -1,14 +1,13 @@
-﻿using System;
+﻿using CarRental.Core.Utilities.Results;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CarRental.Business.Abstract
 {
     public interface IServiceBase<T>
     {
-        T GetAll();
-        bool Add(T entity);
-        bool Update(T entity);
-        bool DeleteByID(int ID);
+        IDataResult<List<T>> GetAll();
+        IResult Add(T entity);
+        IResult Update(T entity);
+        IResult DeleteByID(int ID);
     }
 }
