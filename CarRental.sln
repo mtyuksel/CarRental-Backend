@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.DataAccess", "Car
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Entity", "CarRental.Entity\CarRental.Entity.csproj", "{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.WebAPI", "CarRental.WebAPI\CarRental.WebAPI.csproj", "{6C654EEC-7B58-4934-88DD-1A22BB5B071B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
