@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Core.Entity.Abstract;
 using CarRental.Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace CarRental.WebAPI.Controllers
     [ApiController]
     public class GenericBaseController<T, TService> : ControllerBase
         where TService : IServiceBase<T>
+        where T : IEntity
     {
         protected TService _tService;
 
