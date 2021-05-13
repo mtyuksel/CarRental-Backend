@@ -30,7 +30,9 @@ namespace CarRental.MVCWebUI
             services.AddControllersWithViews();
 
             services.AddSingleton<IColorDal, EfColorDal>();
+            services.AddSingleton<ICarDal, EfCarDal>();
             services.AddSingleton<IColorService, ColorManager>();
+            services.AddSingleton<ICarService, CarManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

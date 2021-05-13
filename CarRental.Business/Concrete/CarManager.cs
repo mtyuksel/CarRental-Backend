@@ -1,6 +1,7 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
+using CarRental.Entity.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -51,6 +52,11 @@ namespace CarRental.Business.Concrete
         public List<Car> GetCarsByBrandID(int brandID)
         {
             return _carDal.GetAll(c => c.BrandID == brandID);
+        }
+
+        public List<CarDetailDTO> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
     }
 }
