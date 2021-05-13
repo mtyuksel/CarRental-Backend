@@ -1,5 +1,4 @@
 ﻿using CarRental.Business.Abstract;
-using CarRental.Core.Utilities.Results;
 using CarRental.Entity.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +11,11 @@ namespace CarRental.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalsController : GenericBaseController<Rental, IRentalService>
+    public class ColorsController : GenericBaseController<Color, IColorService>
     {
-        public RentalsController(IRentalService rentalService) : base(rentalService)
+        public ColorsController(IColorService colorService) : base (colorService)
         {
+
         }
     }
 }
