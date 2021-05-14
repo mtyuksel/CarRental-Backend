@@ -1,5 +1,7 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -18,6 +20,7 @@ namespace CarRental.Business.Concrete
             this._colorDal = colorDal;
         }
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color color)
         {
             _colorDal.Add(color);
@@ -25,6 +28,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Delete(Color color)
         {
             _colorDal.Add(color);
@@ -42,6 +46,7 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<Color>(_colorDal.Get(c => c.ID == ID));
         }
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Color color)
         {
             _colorDal.Update(color);

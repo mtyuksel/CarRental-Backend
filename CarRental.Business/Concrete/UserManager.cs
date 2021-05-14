@@ -1,5 +1,7 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -18,6 +20,7 @@ namespace CarRental.Business.Concrete
             this._userDal = userDal;
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
             _userDal.Add(user);
@@ -25,6 +28,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
@@ -42,6 +46,7 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.ID == ID));
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)
         {
             _userDal.Update(user);

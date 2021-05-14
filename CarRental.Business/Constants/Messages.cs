@@ -7,10 +7,14 @@ namespace CarRental.Business.Constants
 {
     public static class Messages
     {
-        #region Error Messages
+        #region Validation Message
         public static string CarPriceNotValid = "Car price is not valid!";
         public static string CarNameNotValid = "Car name is not valid!";
         public static string CarNameAndPriceNotValid = "Car name and price are not valid!";
+        public static string PasswordNotStrongEnough  = "Your password has to contain at least one lowercase, one uppercase, one digit and one symbol!";
+        #endregion
+
+        #region Error Messages
         public static string CarHasNotYetBeenReturned = "The car has not yet been returned!";
         #endregion
 
