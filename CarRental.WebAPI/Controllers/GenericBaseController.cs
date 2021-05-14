@@ -12,8 +12,6 @@ namespace CarRental.WebAPI.Controllers
 {
     //This class is base for CRUD operations.
     //Thanks to this class, CRUD operations can be performed for each controller without code repetition.
-
-    [Route("api/[controller]")]
     [ApiController]
     public class GenericBaseController<T, TService> : ControllerBase
         where TService : IServiceBase<T>
