@@ -21,5 +21,14 @@ namespace CarRental.Business.Constants
         #endregion
 
         public static string MaintenanceTime = "The service is under maintenance. Please try again in 1 hour.";
+
+        #region Schemas
+        private static string _schemaShouldGraterThan = "{0} has to be grater than {1}!";
+        #endregion
+
+        public static string ShouldGraterThan(string property, string minValue) 
+        {
+            return string.Format(_schemaShouldGraterThan, property, minValue);
+        }
     }
 }

@@ -17,19 +17,19 @@ namespace CarRental.WebAPI.Controllers
         public GenericBaseController(TService tService) => this._tService = tService;
 
         [HttpGet("getall")]
-        public IActionResult GetAll() => GetResponseByResultSuccess(_tService.GetAll());
+        public virtual IActionResult GetAll() => GetResponseByResultSuccess(_tService.GetAll());
 
         [HttpGet("getbyid")]
-        public IActionResult GetByID(int id) => GetResponseByResultSuccess(_tService.GetByID(id));
+        public virtual IActionResult GetByID(int id) => GetResponseByResultSuccess(_tService.GetByID(id));
 
         [HttpPost("add")]
-        public IActionResult Add(T entity) => GetResponseByResultSuccess(_tService.Add(entity));
+        public virtual IActionResult Add(T entity) => GetResponseByResultSuccess(_tService.Add(entity));
 
         [HttpPost("update")]
-        public IActionResult Update(T entity) => GetResponseByResultSuccess(_tService.Update(entity));
+        public virtual IActionResult Update(T entity) => GetResponseByResultSuccess(_tService.Update(entity));
 
         [HttpPost("delete")]
-        public IActionResult Delete(T entity) => GetResponseByResultSuccess(_tService.Delete(entity));
+        public virtual IActionResult Delete(T entity) => GetResponseByResultSuccess(_tService.Delete(entity));
 
         protected IActionResult GetResponseByResultSuccess(IResult result) => result.Success ? Ok(result) : BadRequest(result);
     }

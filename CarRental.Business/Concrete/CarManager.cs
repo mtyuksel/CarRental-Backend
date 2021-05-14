@@ -1,5 +1,8 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Validation;
+using CarRental.Core.CrossCuttingConcerns.Validation.FluentValidation;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -19,16 +22,12 @@ namespace CarRental.Business.Concrete
             this._carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.Name.Length > 2 && car.DailyPrice > 0)
-            {
-                _carDal.Add(car);
+            _carDal.Add(car);
 
-                return new SuccessResult(Messages.SuccesfullyAdded);
-            }
-
-            return new ErrorResult(Messages.CarNameAndPriceNotValid);
+            return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         public IResult Delete(Car car)

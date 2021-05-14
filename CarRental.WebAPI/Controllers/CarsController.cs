@@ -22,6 +22,6 @@ namespace CarRental.WebAPI.Controllers
         public IActionResult GetCarDetails()
         {
             return base.GetResponseByResultSuccess(base._tService.GetCarDetails());
-        }    
+        }
     }
-}
+} 
