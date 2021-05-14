@@ -1,38 +1,45 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
 using CarRental.Core.Aspects.Autofac.Validation;
+using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CarRental.Business.Concrete
 {
     public class RentalManager : IRentalService
     {
         private IRentalDal _rentalDal;
+        private ICarService _carService;
+        private ICustomerService _customerService;
 
-        public RentalManager(IRentalDal rentalDal)
+        public RentalManager(IRentalDal rentalDal, ICarService carService)
         {
             this._rentalDal = rentalDal;
+            this._carService = carService;
         }
 
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            var existRental = _rentalDal.GetAll(r => r.CarID == rental.CarID).OrderBy(r => r.RentDate).FirstOrDefault();
+            var result = BusinessRules.Run(
+                RentalLogics.CheckIfCarExistForGivenID(_carService, rental.CarID),
+                RentalLogics.CheckIfCustomerExistForGivenID(_customerService, rental.CustomerID),
+                RentalLogics.CheckIfCarAlreadyRented(_rentalDal, rental)
+                );
 
-            if (existRental == null || (existRental.ReturnDate != null && existRental.ReturnDate < DateTime.Now))
+            if (result != null)
             {
-                _rentalDal.Add(rental);
-
-                return new SuccessResult(Messages.SuccesfullyAdded);
+                return result;
             }
 
-            return new ErrorResult(Messages.CarHasNotYetBeenReturned);
+            _rentalDal.Add(rental);
+
+            return new SuccessResult();
         }
 
         [ValidationAspect(typeof(RentalValidator))]
@@ -56,6 +63,16 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
+            var result = BusinessRules.Run(
+                RentalLogics.CheckIfCarExistForGivenID(_carService, rental.CarID),
+                RentalLogics.CheckIfCustomerExistForGivenID(_customerService, rental.CustomerID)
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _rentalDal.Update(rental);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);

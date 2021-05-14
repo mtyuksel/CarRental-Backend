@@ -1,13 +1,13 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
 using CarRental.Core.Aspects.Autofac.Validation;
+using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CarRental.Business.Concrete
 {
@@ -23,6 +23,13 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
+            IResult result = BusinessRules.Run(UserLogics.CheckIfEmailAlreadyExist(_userDal, user.Email));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+            
             _userDal.Add(user);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
@@ -49,6 +56,13 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)
         {
+            IResult result = BusinessRules.Run(UserLogics.CheckIfEmailAlreadyExist(_userDal, user.Email));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _userDal.Update(user);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);

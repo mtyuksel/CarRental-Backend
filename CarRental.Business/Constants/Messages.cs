@@ -1,8 +1,4 @@
-﻿using CarRental.Entity.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace CarRental.Business.Constants
 {
     public static class Messages
@@ -15,7 +11,8 @@ namespace CarRental.Business.Constants
         #endregion
 
         #region Error Messages
-        public static string CarHasNotYetBeenReturned = "The car has not yet been returned!";
+        public static string CarAlreadyRented = "The car has already rented!";
+        public static string CountOfCarForBrandError = "The brand has not too many cars!";
         #endregion
 
         #region Success Messages
@@ -28,11 +25,23 @@ namespace CarRental.Business.Constants
 
         #region Schemas
         private static string _schemaShouldGraterThan = "{0} has to be grater than {1}!";
+        private static string _schemaAlreadyExist = "The {0} already exist!";
+        private static string _schemaNotExist = "The {0} is not exist!";
         #endregion
 
-        public static string ShouldGraterThan(string property, string minValue) 
+        public static string ShouldGraterThan(string shouldGraterItem, string minValue) 
         {
-            return string.Format(_schemaShouldGraterThan, property, minValue);
+            return string.Format(_schemaShouldGraterThan, shouldGraterItem, minValue);
+        }
+
+        public static string AlreadyExist(string existItem)
+        {
+            return string.Format(_schemaAlreadyExist, existItem.ToLower());
+        }
+        
+        public static string NotExist(string notExistItem)
+        {
+            return string.Format(_schemaAlreadyExist, notExistItem.ToLower());
         }
     }
 }

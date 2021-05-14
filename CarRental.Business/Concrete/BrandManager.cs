@@ -1,7 +1,9 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
 using CarRental.Core.Aspects.Autofac.Validation;
+using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -23,6 +25,13 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand brand)
         {
+            var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _brandDal.Add(brand);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
@@ -49,6 +58,13 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
+            var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _brandDal.Update(brand);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);

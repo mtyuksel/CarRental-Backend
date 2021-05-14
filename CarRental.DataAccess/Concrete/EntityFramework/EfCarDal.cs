@@ -13,7 +13,6 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
         {
             using (CarRentalContext context = new CarRentalContext())
             {
-
                 var result = from c in context.Cars
                              join b in context.Brands on c.BrandID equals b.ID
                              join clr in context.Colors on c.ColorID equals clr.ID

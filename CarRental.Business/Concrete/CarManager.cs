@@ -1,13 +1,13 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
 using CarRental.Core.Aspects.Autofac.Validation;
-using CarRental.Core.CrossCuttingConcerns.Validation.FluentValidation;
+using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
-using System;
 using System.Collections.Generic;
 
 
@@ -25,6 +25,15 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
+            IResult result = BusinessRules.Run(
+                CarLogics.CheckIfCarAlreadyExist(_carDal, car),
+                CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _carDal.Add(car);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
@@ -40,9 +49,11 @@ namespace CarRental.Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 23)
+            IResult result = BusinessRules.Run(CarLogics.CheckIfSystemAtMaintenanceTime());
+
+            if (!result.Success)
             {
-                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+                return new ErrorDataResult<List<Car>>(result.Message);
             }
 
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
@@ -61,6 +72,15 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
+            IResult result = BusinessRules.Run(
+                CarLogics.CheckIfCarAlreadyExist(_carDal, car),
+                CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _carDal.Update(car);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
