@@ -43,7 +43,10 @@ namespace CarRental.Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(CarImage carImage)
         {
-            throw new System.NotImplementedException();
+            var existsImage = _carImageDal.Get(c => c.CarID == carImage.CarID && c.ImagePath == carImage.ImagePath);
+            _carImageDal.Delete(existsImage);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<CarImage>> GetAll()

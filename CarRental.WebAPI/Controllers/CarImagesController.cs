@@ -53,26 +53,92 @@ namespace CarRental.WebAPI.Controllers
             return SaveImage(fileUpload, filename);
         }
 
+        [HttpPost("delete")]
+        public IResult Delete(CarImage carImage)
+        {
+            var result = _carImageService.Delete(carImage);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            return DeleteImage(carImage.ImagePath);
+        }
+
+        [HttpPost("update")]
+        public IResult Update([FromForm] FileUpload fileUpload)
+        {
+            var filename = Guid.NewGuid().ToString() + ".png";
+
+            CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
+            carImage.Date = DateTime.Now;
+
+            var result = _carImageService.Update(carImage);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            return SaveImage(fileUpload, filename);
+        }
+
         private IResult SaveImage(FileUpload fileUpload, string fileName)
         {
-
             if (fileUpload.Files.Length > 0)
             {
-                string path = _environment.WebRootPath + "\\Images\\Uploads\\";      
+                string path = _environment.WebRootPath + "\\Images\\Uploads\\";
 
                 if (Directory.Exists(path))
                 {
-                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    if (IsImageExists(path + fileName))
                     {
-                        fileUpload.Files.CopyTo(fileStream);
-                        fileStream.Flush();
-
-                        return new SuccessResult("File Added.");
+                        return UpdateImage(fileUpload, fileName, path);
+                    }
+                    else
+                    {
+                        return SaveImage(fileUpload, fileName, path);
                     }
                 }
             }
 
             return new ErrorResult("An error occured while saving the image!");
+        }
+
+        private static IResult SaveImage(FileUpload fileUpload, string fileName, string path)
+        {
+            using (FileStream fileStream = System.IO.File.Create(path + fileName))
+            {
+                fileUpload.Files.CopyTo(fileStream);
+                fileStream.Flush();
+
+                return new SuccessResult("File Added.");
+            }
+        }
+
+        private static IResult UpdateImage(FileUpload fileUpload, string fileName, string path)
+        {
+            using (FileStream fileStream = System.IO.File.OpenRead(path + fileName))
+            {
+                fileUpload.Files.CopyTo(fileStream);
+                fileStream.Flush();
+
+                return new SuccessResult("File Updated.");
+            }
+        }
+
+        private IResult DeleteImage(string imagePath)
+        {
+            string path = _environment.WebRootPath + "\\Images\\Uploads\\";
+            System.IO.File.Delete(path + imagePath);
+
+            return new SuccessResult("File Deleted.");
+        }
+
+        private bool IsImageExists(string imagePath)
+        {
+            return Directory.Exists(imagePath);
         }
     }
 }
