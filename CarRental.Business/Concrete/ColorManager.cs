@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace CarRental.Business.Concrete
 {
+    [SecuredOperation("color,admin")]
     public class ColorManager : IColorService
     {
         private IColorDal _colorDal;
@@ -46,6 +47,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
+        [SecuredOperation("admin")]
         public IDataResult<List<Color>> GetAll()
         {
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll());

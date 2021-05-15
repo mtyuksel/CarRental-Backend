@@ -1,10 +1,8 @@
-using CarRental.Business.Abstract;
-using CarRental.Business.Concrete;
+using CarRental.Core.DependencyResolvers;
+using CarRental.Core.Extensions;
 using CarRental.Core.Utilities.IoC;
 using CarRental.Core.Utilities.Security.Encryption;
 using CarRental.Core.Utilities.Security.JWT;
-using CarRental.DataAccess.Abstract;
-using CarRental.DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +46,8 @@ namespace CarRental.WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
+
+            services.AddDependencyResolvers(new ICoreModule[]{new CoreModule()});
 
             ServiceTool.Create(services);
 
