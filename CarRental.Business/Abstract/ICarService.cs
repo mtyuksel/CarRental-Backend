@@ -9,5 +9,6 @@ namespace CarRental.Business.Abstract
     public interface ICarService : IServiceBase<Car>
     {
         IDataResult<List<CarDetailDTO>> GetCarDetails();
+        IResult CheckIfCarExists(int ID);
     }
 }

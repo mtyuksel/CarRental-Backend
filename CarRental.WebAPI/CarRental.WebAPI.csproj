@@ -16,4 +16,8 @@
     <ProjectReference Include="..\CarRental.Entity\CarRental.Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Uploads\" />
+  </ItemGroup>
+
 </Project>

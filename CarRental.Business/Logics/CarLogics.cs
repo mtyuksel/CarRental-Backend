@@ -8,7 +8,7 @@ namespace CarRental.Business.Logics
 {
     internal class CarLogics
     {
-        public static IResult CheckIfCarAlreadyExist(ICarDal carDal ,Car car)
+        public static IResult CheckIfCarNotExists(ICarDal carDal ,Car car)
         {
             var result = carDal.Get(c => c.BrandID == car.BrandID
            && c.ColorID == car.ColorID

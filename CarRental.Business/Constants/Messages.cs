@@ -13,6 +13,7 @@ namespace CarRental.Business.Constants
         #region Error Messages
         public static string CarAlreadyRented = "The car has already rented!";
         public static string CountOfCarForBrandError = "The brand has not too many cars!";
+        public static string CarImageLimitExceeded = "Cars can have maximum 5 images!";
         #endregion
 
         #region Success Messages
@@ -41,7 +42,7 @@ namespace CarRental.Business.Constants
         
         public static string NotExist(string notExistItem)
         {
-            return string.Format(_schemaAlreadyExist, notExistItem.ToLower());
+            return string.Format(_schemaNotExist, notExistItem.ToLower());
         }
     }
 }

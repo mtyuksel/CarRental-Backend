@@ -26,7 +26,7 @@ namespace CarRental.Business.Concrete
         public IResult Add(Car car)
         {
             IResult result = BusinessRules.Run(
-                CarLogics.CheckIfCarAlreadyExist(_carDal, car),
+                CarLogics.CheckIfCarNotExists(_carDal, car),
                 CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
 
             if (!result.Success)
@@ -73,7 +73,7 @@ namespace CarRental.Business.Concrete
         public IResult Update(Car car)
         {
             IResult result = BusinessRules.Run(
-                CarLogics.CheckIfCarAlreadyExist(_carDal, car),
+                CarLogics.CheckIfCarNotExists(_carDal, car),
                 CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
 
             if (!result.Success)
@@ -84,6 +84,18 @@ namespace CarRental.Business.Concrete
             _carDal.Update(car);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
+        }
+
+        public IResult CheckIfCarExists(int ID)
+        {
+            var result = GetByID(ID);
+
+            if (result.Data != null)
+            {
+                return new SuccessResult();
+            }
+
+            return new ErrorResult(Messages.NotExist("car"));
         }
     }
 }
