@@ -17,6 +17,16 @@ namespace CarRental.Business.Logics
 
             return result == null ? new SuccessResult() : new ErrorResult(Messages.AlreadyExist("car"));
         }
+        
+        public static IResult CheckIfCarExists(ICarDal carDal ,Car car)
+        {
+            var result = carDal.Get(c => c.BrandID == car.BrandID
+           && c.ColorID == car.ColorID
+           && c.ModelYear == car.ModelYear
+           && c.Name == car.Name);
+
+            return result != null ? new SuccessResult() : new ErrorResult(Messages.NotExist("car"));
+        }
 
         public static IResult CheckIfCarCountOfBrandCorrect(ICarDal carDal, int brandID)
         {
@@ -25,6 +35,6 @@ namespace CarRental.Business.Logics
             return result.Count <= 3 ? new SuccessResult() : new ErrorResult(Messages.CountOfCarForBrandError);
         }
 
-        public static IResult CheckIfSystemAtMaintenanceTime() => DateTime.Now.Hour == 0 ? new ErrorResult(Messages.MaintenanceTime) : new SuccessResult();
+        public static IResult CheckIfSystemAtMaintenanceTime() => DateTime.Now.Hour == 8 ? new ErrorResult(Messages.MaintenanceTime) : new SuccessResult();
     }
 }

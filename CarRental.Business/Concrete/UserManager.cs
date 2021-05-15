@@ -2,6 +2,7 @@
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Caching;
 using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Entity.Concrete;
 using CarRental.Core.Utilities.Business;
@@ -61,6 +62,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
+        [CacheAspect(10)]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());

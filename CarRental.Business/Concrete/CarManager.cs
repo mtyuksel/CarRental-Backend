@@ -44,7 +44,7 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
-        [CacheRemoveAspect("IProductService.Get")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
@@ -78,11 +78,11 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
-        [CacheRemoveAspect("IProductService.Get")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             IResult result = BusinessRules.Run(
-                CarLogics.CheckIfCarNotExists(_carDal, car),
+                CarLogics.CheckIfCarExists(_carDal, car),
                 CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
 
             if (!result.Success)

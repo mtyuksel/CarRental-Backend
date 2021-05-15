@@ -2,6 +2,8 @@
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Caching;
+using CarRental.Core.Aspects.Autofac.Performance;
 using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
@@ -23,6 +25,7 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(BrandValidator))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)
         {
             var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));
@@ -38,6 +41,7 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(BrandValidator))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
@@ -45,17 +49,21 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
+        [CacheAspect(30)]
+        [PerformanceAspect(5)]
         public IDataResult<List<Brand>> GetAll()
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
+        [CacheAspect(10)]
         public IDataResult<Brand> GetByID(int ID)
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.ID == ID));
         }
 
         [ValidationAspect(typeof(BrandValidator))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Update(Brand brand)
         {
             var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));

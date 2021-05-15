@@ -3,9 +3,6 @@ using CarRental.Core.Utilities.IoC;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarRental.Core.Aspects.Autofac.Performance
 {
@@ -30,6 +27,7 @@ namespace CarRental.Core.Aspects.Autofac.Performance
         {
             if (_stopwatch.Elapsed.TotalSeconds > _interval)
             {
+                //Send mail etc.
                 Debug.WriteLine($"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}");
             }
             _stopwatch.Reset();

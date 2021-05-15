@@ -1,5 +1,7 @@
 ﻿using CarRental.Business.Abstract;
 using CarRental.Business.Constants;
+using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Entity.Concrete;
 using CarRental.Core.Utilities.Results;
 using CarRental.Core.Utilities.Security.Hashing;
@@ -19,6 +21,7 @@ namespace CarRental.Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
+        [ValidationAspect(typeof(UserForLoginDTOValidator))]
         public IDataResult<User> Register(UserForRegisterDTO userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -38,6 +41,7 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [ValidationAspect(typeof(UserForLoginDTOValidator))]
         public IDataResult<User> Login(UserForLoginDTO userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
@@ -65,6 +69,7 @@ namespace CarRental.Business.Concrete
 
             return new SuccessResult();
         }
+
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {

@@ -1,6 +1,8 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Caching;
 using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
@@ -28,6 +30,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CustomerValidator))]
         public IResult Delete(Customer customer)
         {
@@ -36,6 +39,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
+        [CacheAspect(10)]
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());

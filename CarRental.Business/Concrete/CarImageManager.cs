@@ -1,7 +1,10 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Caching;
+using CarRental.Core.Aspects.Autofac.Performance;
 using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
@@ -22,6 +25,7 @@ namespace CarRental.Business.Concrete
             this._carService = carService;
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage)
         {
@@ -41,6 +45,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(CarImage carImage)
         {
@@ -55,12 +60,16 @@ namespace CarRental.Business.Concrete
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
-
+                
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
+
+        [PerformanceAspect(5)]
+        [CacheAspect]
         public IDataResult<List<string>> GetAllImagePathsByCarID(int carID)
         {
             var result = _carImageDal.GetImagePathsByCarID(carID);
@@ -73,7 +82,8 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<List<string>>(result);
         }
 
-
+        [PerformanceAspect(5)]
+        [CacheAspect]
         public IDataResult<CarImage> GetByID(int ID)
         {
             var result = _carImageDal.Get(c => c.ID == ID);
@@ -86,6 +96,8 @@ namespace CarRental.Business.Concrete
             return new ErrorDataResult<CarImage>(Messages.CarNotFound);
         }
 
+        [PerformanceAspect(5)]
+        [CacheAspect(5)]
         public IDataResult<CarImage> GetByImagePath(string imagePath)
         {
             var result = _carImageDal.Get(c => c.ImagePath == imagePath);
@@ -98,7 +110,9 @@ namespace CarRental.Business.Concrete
             return new ErrorDataResult<CarImage>(Messages.ImagePathNotFound);
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
+        [CacheRemoveAspect("ICarImageManager.Get")]
         public IResult Update(CarImage carImage)
         {
             var result = BusinessRules.Run(

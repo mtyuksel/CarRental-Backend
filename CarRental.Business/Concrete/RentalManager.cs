@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
@@ -23,6 +24,7 @@ namespace CarRental.Business.Concrete
             this._carService = carService;
         }
 
+        [SecuredOperation("admin,salesPerson,rental.add")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {

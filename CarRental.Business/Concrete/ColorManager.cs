@@ -3,6 +3,7 @@ using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
+using CarRental.Core.Aspects.Autofac.Caching;
 using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
@@ -40,6 +41,7 @@ namespace CarRental.Business.Concrete
 
         [SecuredOperation("color.delete,admin")]
         [ValidationAspect(typeof(ColorValidator))]
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Delete(Color color)
         {
             _colorDal.Add(color);
@@ -48,6 +50,7 @@ namespace CarRental.Business.Concrete
         }
 
         [SecuredOperation("admin")]
+        [CacheAspect]
         public IDataResult<List<Color>> GetAll()
         {
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
@@ -59,6 +62,7 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
+        [CacheRemoveAspect("ICarImageManager.Get")]
         public IResult Update(Color color)
         {
             var result = BusinessRules.Run(ColorLogics.CheckIfColorAlreadyExist(_colorDal, color));
