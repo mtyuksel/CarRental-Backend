@@ -14,6 +14,9 @@ namespace CarRental.Business.Constants
         public static string CarAlreadyRented = "The car has already rented!";
         public static string CountOfCarForBrandError = "The brand has not too many cars!";
         public static string CarImageLimitExceeded = "Cars can have maximum 5 images!";
+        public static string CarNotFound = "The car not found!";
+        public static string ImagePathNotUnique = "This image path has been registered before. Please use different image name!";
+        public static string ImagePathNotFound = "There is no image for given image name!";
         #endregion
 
         #region Success Messages

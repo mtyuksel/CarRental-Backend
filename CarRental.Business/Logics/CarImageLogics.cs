@@ -12,5 +12,12 @@ namespace CarRental.Business.Logics
 
             return result.Count < 5 ? new SuccessResult() : new ErrorResult(Messages.CarImageLimitExceeded); 
         }
+
+        public static IResult CheckIfImagePathUnique(ICarImageDal carImageDal, string imagePath)
+        {
+            var result = carImageDal.Get(c => c.ImagePath == imagePath);
+
+            return result == null ? new SuccessResult() : new ErrorResult(Messages.CarImageLimitExceeded);
+        }
     }
 }

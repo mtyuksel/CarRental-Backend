@@ -19,11 +19,13 @@ namespace CarRental.WebAPI.Controllers
     {
         private ICarImageService _carImageService;
         public static IWebHostEnvironment _environment;
+        private string _uploadPath;
 
         public CarImagesController(ICarImageService carImageService, IWebHostEnvironment environment)
         {
             this._carImageService = carImageService;
             _environment = environment;
+            _uploadPath = _environment.WebRootPath + "\\Images\\Uploads\\";
         }
 
         public class FileUpload
@@ -36,21 +38,28 @@ namespace CarRental.WebAPI.Controllers
         [HttpPost("add")]
         public IResult Add([FromForm] FileUpload fileUpload)
         {
-            var filename = Guid.NewGuid().ToString() + ".png";
+            var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
-            CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
-
-            carImage.ImagePath = filename;
-            carImage.Date = DateTime.Now;
-
-            var result = _carImageService.Add(carImage);
-
-            if (!result.Success)
+            if (fileCheck.Success)
             {
-                return result;
+                var filename = Guid.NewGuid().ToString() + ".png";
+
+                CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
+
+                carImage.ImagePath = filename;
+                carImage.Date = DateTime.Now;
+
+                var result = _carImageService.Add(carImage);
+
+                if (!result.Success)
+                {
+                    return result;
+                }
+
+                return SaveImage(fileUpload, filename);
             }
 
-            return SaveImage(fileUpload, filename);
+            return fileCheck;
         }
 
         [HttpPost("delete")]
@@ -69,76 +78,74 @@ namespace CarRental.WebAPI.Controllers
         [HttpPost("update")]
         public IResult Update([FromForm] FileUpload fileUpload)
         {
-            var filename = Guid.NewGuid().ToString() + ".png";
+            var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
-            CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
-            carImage.Date = DateTime.Now;
-
-            var result = _carImageService.Update(carImage);
-
-            if (!result.Success)
+            if (fileCheck.Success)
             {
-                return result;
+                CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
+                carImage.Date = DateTime.Now;
+
+                var result = _carImageService.GetByImagePath(carImage.ImagePath);
+
+                if (!result.Success)
+                {
+                    return result;
+                }
+
+                return UpdateImage(fileUpload, carImage.ImagePath);
             }
 
-            return SaveImage(fileUpload, filename);
+            return fileCheck;
         }
 
         private IResult SaveImage(FileUpload fileUpload, string fileName)
         {
-            if (fileUpload.Files.Length > 0)
-            {
-                string path = _environment.WebRootPath + "\\Images\\Uploads\\";
 
-                if (Directory.Exists(path))
+            if (Directory.Exists(_uploadPath))
+            {
+                using (FileStream fileStream = System.IO.File.Create(_uploadPath + fileName))
                 {
-                    if (IsImageExists(path + fileName))
-                    {
-                        return UpdateImage(fileUpload, fileName, path);
-                    }
-                    else
-                    {
-                        return SaveImage(fileUpload, fileName, path);
-                    }
+                    fileUpload.Files.CopyTo(fileStream);
+                    fileStream.Flush();
+
+                    return new SuccessResult("File Added.");
                 }
             }
 
-            return new ErrorResult("An error occured while saving the image!");
+            return new ErrorResult("There is an error occured while image adding!");
         }
 
-        private static IResult SaveImage(FileUpload fileUpload, string fileName, string path)
+        private IResult UpdateImage(FileUpload fileUpload, string fileName)
         {
-            using (FileStream fileStream = System.IO.File.Create(path + fileName))
+            if (Directory.Exists(_uploadPath))
             {
-                fileUpload.Files.CopyTo(fileStream);
-                fileStream.Flush();
+                using (FileStream fileStream = System.IO.File.OpenWrite(_uploadPath + fileName))
+                {
+                    fileUpload.Files.CopyTo(fileStream);
+                    fileStream.Flush();
 
-                return new SuccessResult("File Added.");
+                    return new SuccessResult("File Updated.");
+                }
             }
-        }
 
-        private static IResult UpdateImage(FileUpload fileUpload, string fileName, string path)
-        {
-            using (FileStream fileStream = System.IO.File.OpenRead(path + fileName))
-            {
-                fileUpload.Files.CopyTo(fileStream);
-                fileStream.Flush();
-
-                return new SuccessResult("File Updated.");
-            }
+            return new ErrorResult("There is an error occured while image updating!");
         }
 
         private IResult DeleteImage(string imagePath)
         {
-            string path = _environment.WebRootPath + "\\Images\\Uploads\\";
-            System.IO.File.Delete(path + imagePath);
+            System.IO.File.Delete(_uploadPath + imagePath);
 
             return new SuccessResult("File Deleted.");
         }
 
-        private bool IsImageExists(string imagePath)
+        private IResult CheckIfFileUploaded(IFormFile formFile)
         {
-            return Directory.Exists(imagePath);
+            if (formFile == null || formFile.Length < 1)
+            {
+                return new ErrorResult("Please select at least one image to upload!");
+            }
+
+            return new SuccessResult();
         }
     }
 }

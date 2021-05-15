@@ -27,7 +27,8 @@ namespace CarRental.Business.Concrete
         {
             var result = BusinessRules.Run(
                 _carService.CheckIfCarExists(carImage.CarID),
-                CarImageLogics.CheckIfNumberOfImagesOfCarMax(_carImageDal, carImage.CarID)
+                CarImageLogics.CheckIfNumberOfImagesOfCarMax(_carImageDal, carImage.CarID),
+                CarImageLogics.CheckIfImagePathUnique(_carImageDal, carImage.ImagePath)
                 );
 
             if (!result.Success)
@@ -44,6 +45,12 @@ namespace CarRental.Business.Concrete
         public IResult Delete(CarImage carImage)
         {
             var existsImage = _carImageDal.Get(c => c.CarID == carImage.CarID && c.ImagePath == carImage.ImagePath);
+
+            if (existsImage == null)
+            {
+                return new ErrorResult(Messages.ImagePathNotFound);
+            }
+
             _carImageDal.Delete(existsImage);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
@@ -56,20 +63,42 @@ namespace CarRental.Business.Concrete
 
         public IDataResult<CarImage> GetByID(int ID)
         {
-            throw new System.NotImplementedException();
+            var result = _carImageDal.Get(c => c.ID == ID);
+
+            if (result != null)
+            {
+                return new SuccessDataResult<CarImage>(result);
+            }
+
+            return new ErrorDataResult<CarImage>(Messages.CarNotFound);
+        }
+
+        public IDataResult<CarImage> GetByImagePath(string imagePath)
+        {
+            var result = _carImageDal.Get(c => c.ImagePath == imagePath);
+
+            if (result != null)
+            {
+                return new SuccessDataResult<CarImage>(result);
+            }
+
+            return new ErrorDataResult<CarImage>(Messages.ImagePathNotFound);
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(CarImage carImage)
         {
-            var result = BusinessRules.Run(_carService.CheckIfCarExists(carImage.CarID));
+            var result = BusinessRules.Run(
+                _carService.CheckIfCarExists(carImage.CarID),
+                CarImageLogics.CheckIfImagePathUnique(_carImageDal, carImage.ImagePath));
 
             if (!result.Success)
             {
                 return result;
             }
 
-            _carImageDal.Update(carImage);
+            var existsCar = _carImageDal.Get(c => c.ImagePath == carImage.ImagePath && c.CarID == carImage.CarID);
+            _carImageDal.Update(existsCar);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }
