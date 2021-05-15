@@ -1,5 +1,5 @@
 ﻿using CarRental.Business.Abstract;
-using CarRental.Entity.Concrete;
+using CarRental.Core.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRental.WebAPI.Controllers

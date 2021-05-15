@@ -3,10 +3,10 @@ using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
 using CarRental.Core.Aspects.Autofac.Validation;
+using CarRental.Core.Entity.Concrete;
 using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
-using CarRental.Entity.Concrete;
 using System.Collections.Generic;
 
 namespace CarRental.Business.Concrete
@@ -21,6 +21,24 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(UserValidator))]
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
+        }
+
+        public IDataResult<User> GetByMail(string email)
+        {
+            var result = _userDal.Get(u => u.Email == email);
+
+            if (result == null)
+            {
+                return new ErrorDataResult<User>(Messages.NotExist("user"));
+            }
+
+            return new SuccessDataResult<User>(result);
+        }
+
+        //[ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
             IResult result = BusinessRules.Run(UserLogics.CheckIfEmailAlreadyExist(_userDal, user.Email));

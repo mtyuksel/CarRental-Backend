@@ -11,12 +11,18 @@ namespace CarRental.Business.Constants
         #endregion
 
         #region Error Messages
-        public static string CarAlreadyRented = "The car has already rented!";
-        public static string CountOfCarForBrandError = "The brand has not too many cars!";
-        public static string CarImageLimitExceeded = "Cars can have maximum 5 images!";
-        public static string CarNotFound = "The car not found!";
+        public static string CarAlreadyRented = "The Car Has Already Rented!";
+        public static string CountOfCarForBrandError = "The Brand Has Too Many Cars!";
+        public static string CarImageLimitExceeded = "Cars Can Have Maximum 5 Images!";
+        public static string CarNotFound = "The Car Not Found!";
         public static string ImagePathNotUnique = "This image path has been registered before. Please use different image name!";
         public static string ImagePathNotFound = "There is no image for given image name!";
+        public static string AuthorizationDenied = "Authorization Denied!";
+        public static string UserRegistered = "Registered successfuly.";
+        public static string UserNotFound = "User Not Found!";
+        public static string PasswordError = "Password Error!";
+        public static string SuccessfulLogin = "Logined successfuly.";
+        public static string AccessTokenCreated = "Access token successfuly created.";
         #endregion
 
         #region Success Messages

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-
 namespace CarRental.Core.Utilities.Interceptors
 {
     public class AspectInterceptorSelector : IInterceptorSelector

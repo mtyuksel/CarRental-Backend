@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Core.Utilities.Results;
 using CarRental.Entity.Concrete;
 using Microsoft.AspNetCore.Hosting;
@@ -65,6 +66,7 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpPost("add")]
+        [SecuredOperation("product.add,admin")]
         public IActionResult Add([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);

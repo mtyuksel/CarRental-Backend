@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpGet("getcardetails")]
+
         public IActionResult GetCarDetails()
         {
             return base.GetResponseByResultSuccess(base._tService.GetCarDetails());

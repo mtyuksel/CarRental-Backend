@@ -6,7 +6,6 @@ using FluentValidation;
 using System;
 using System.Linq;
 
-
 namespace CarRental.Core.Aspects.Autofac.Validation
 {
     public class ValidationAspect : MethodInterception

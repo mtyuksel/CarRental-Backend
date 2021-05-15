@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
@@ -20,6 +21,7 @@ namespace CarRental.Business.Concrete
             this._colorDal = colorDal;
         }
 
+        [SecuredOperation("color.add,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color color)
         {
@@ -35,6 +37,7 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
+        [SecuredOperation("color.delete,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Delete(Color color)
         {

@@ -3,9 +3,11 @@ using Autofac.Extras.DynamicProxy;
 using CarRental.Business.Abstract;
 using CarRental.Business.Concrete;
 using CarRental.Core.Utilities.Interceptors;
+using CarRental.Core.Utilities.Security.JWT;
 using CarRental.DataAccess.Abstract;
 using CarRental.DataAccess.Concrete.EntityFramework;
 using Castle.DynamicProxy;
+using Microsoft.AspNetCore.Http;
 
 namespace CarRental.Business.DependencyResolvers.Autofac
 {
@@ -20,6 +22,7 @@ namespace CarRental.Business.DependencyResolvers.Autofac
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
+            builder.RegisterType<AuthManager>().As<IAuthService>();
 
             builder.RegisterType<EfBrandDal>().As<IBrandDal>().SingleInstance();
             builder.RegisterType<EfCarDal>().As<ICarDal>().SingleInstance();
@@ -28,6 +31,8 @@ namespace CarRental.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             
