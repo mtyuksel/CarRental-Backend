@@ -61,6 +61,19 @@ namespace CarRental.Business.Concrete
             throw new System.NotImplementedException();
         }
 
+        public IDataResult<List<string>> GetAllImagePathsByCarID(int carID)
+        {
+            var result = _carImageDal.GetImagePathsByCarID(carID);
+
+            if (result.Count == 0)
+            {
+                return new ErrorDataResult<List<string>>(Messages.NotFound("images"));
+            }
+
+            return new SuccessDataResult<List<string>>(result);
+        }
+
+
         public IDataResult<CarImage> GetByID(int ID)
         {
             var result = _carImageDal.Get(c => c.ID == ID);

@@ -31,6 +31,7 @@ namespace CarRental.Business.Constants
         private static string _schemaShouldGraterThan = "{0} has to be grater than {1}!";
         private static string _schemaAlreadyExist = "The {0} already exist!";
         private static string _schemaNotExist = "The {0} is not exist!";
+        private static string _schemaNotFound = "The {0} not found!";
         #endregion
 
         public static string ShouldGraterThan(string shouldGraterItem, string minValue) 
@@ -46,6 +47,11 @@ namespace CarRental.Business.Constants
         public static string NotExist(string notExistItem)
         {
             return string.Format(_schemaNotExist, notExistItem.ToLower());
+        }
+
+        public static string NotFound(string notFoundItem)
+        {
+            return string.Format(_schemaNotFound, notFoundItem.ToLower());
         }
     }
 }

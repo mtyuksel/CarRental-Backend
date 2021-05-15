@@ -20,12 +20,15 @@ namespace CarRental.WebAPI.Controllers
         private ICarImageService _carImageService;
         public static IWebHostEnvironment _environment;
         private string _uploadPath;
+        private string _defaultPath;
+        private string _defaultImageName = "default-car.png";
 
         public CarImagesController(ICarImageService carImageService, IWebHostEnvironment environment)
         {
             this._carImageService = carImageService;
             _environment = environment;
             _uploadPath = _environment.WebRootPath + "\\Images\\Uploads\\";
+            _defaultPath = _environment.WebRootPath + "\\Images\\System\\";
         }
 
         public class FileUpload
@@ -35,8 +38,36 @@ namespace CarRental.WebAPI.Controllers
             public string CarImage { get; set; }
         }
 
+        [HttpGet("getallbycarid")]
+        public IActionResult GetAllByCarID(int carID)
+        {
+            var result = _carImageService.GetAllImagePathsByCarID(carID);
+
+            if (result.Success)
+            {
+                return GetImages(result.Data, _uploadPath);
+            }
+
+            return GetImages(new List<string> { _defaultImageName }, _defaultPath);
+        }
+
+        private IActionResult GetImages(List<string> imagePaths, string filePath)
+        {
+            List<string> imageURLs = new List<string>();
+            string baseUrl = this.Request.Scheme + "://" + this.Request.Host + "/";
+            filePath = filePath.Substring(filePath.IndexOf("Images\\")).Replace("\\", @"/");
+
+            foreach (var imagePath in imagePaths)
+            {
+                string path = baseUrl + filePath + imagePath;
+                imageURLs.Add(path);
+            }
+
+            return GetResponseByResultSuccess(imageURLs.Count > 0 ? new SuccessDataResult<List<string>>(imageURLs) : new ErrorDataResult<List<string>>("Files cannot found!"));
+        }
+
         [HttpPost("add")]
-        public IResult Add([FromForm] FileUpload fileUpload)
+        public IActionResult Add([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
@@ -53,30 +84,30 @@ namespace CarRental.WebAPI.Controllers
 
                 if (!result.Success)
                 {
-                    return result;
+                    return GetResponseByResultSuccess(result);
                 }
 
-                return SaveImage(fileUpload, filename);
+                return GetResponseByResultSuccess(SaveImage(fileUpload, filename));
             }
 
-            return fileCheck;
+            return GetResponseByResultSuccess(fileCheck);
         }
 
         [HttpPost("delete")]
-        public IResult Delete(CarImage carImage)
+        public IActionResult Delete(CarImage carImage)
         {
             var result = _carImageService.Delete(carImage);
 
             if (!result.Success)
             {
-                return result;
+                return GetResponseByResultSuccess(result);
             }
 
-            return DeleteImage(carImage.ImagePath);
+            return GetResponseByResultSuccess(DeleteImage(carImage.ImagePath));
         }
 
         [HttpPost("update")]
-        public IResult Update([FromForm] FileUpload fileUpload)
+        public IActionResult Update([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
@@ -89,13 +120,13 @@ namespace CarRental.WebAPI.Controllers
 
                 if (!result.Success)
                 {
-                    return result;
+                    return GetResponseByResultSuccess(result);
                 }
 
-                return UpdateImage(fileUpload, carImage.ImagePath);
+                return GetResponseByResultSuccess(UpdateImage(fileUpload, carImage.ImagePath));
             }
 
-            return fileCheck;
+            return GetResponseByResultSuccess(fileCheck);
         }
 
         private IResult SaveImage(FileUpload fileUpload, string fileName)
@@ -147,5 +178,7 @@ namespace CarRental.WebAPI.Controllers
 
             return new SuccessResult();
         }
+
+        private IActionResult GetResponseByResultSuccess(IResult result) => result.Success ? Ok(result) : BadRequest(result);
     }
 }
