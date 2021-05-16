@@ -25,14 +25,9 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  DailyPrice = c.DailyPrice,
                                  Description = c.Description,
                                  ModelYear = c.ModelYear,
-                                 BrandID = b.ID,
-                                 BrandName = b.Name,
-                                 ColorID = clr.ID,
-                                 ColorName = clr.Name,
-                                 CityID = cty.ID,
-                                 CityName = cty.Name,
-                                 LocationID = l.ID,
-                                 LocationName = l.Name
+                                 Brand = b,
+                                 Color = clr,
+                                 Location = new LocationDTO { LocationID = l.ID, City = cty },
                              };
 
                 return result.ToList();
