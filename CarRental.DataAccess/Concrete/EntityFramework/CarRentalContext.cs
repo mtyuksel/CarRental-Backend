@@ -21,5 +21,7 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
         public DbSet<User> Users { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<City> Cities { get; set; }
     }
 }

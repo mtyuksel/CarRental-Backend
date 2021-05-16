@@ -16,6 +16,8 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                 var result = from c in context.Cars
                              join b in context.Brands on c.BrandID equals b.ID
                              join clr in context.Colors on c.ColorID equals clr.ID
+                             join l in context.Locations on c.LocationID equals l.ID
+                             join cty in context.Cities on l.CityID equals cty.ID
                              select new CarDetailDTO
                              {
                                  CarID = c.ID,
@@ -26,7 +28,11 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  BrandID = b.ID,
                                  BrandName = b.Name,
                                  ColorID = clr.ID,
-                                 ColorName = clr.Name
+                                 ColorName = clr.Name,
+                                 CityID = cty.ID,
+                                 CityName = cty.Name,
+                                 LocationID = l.ID,
+                                 LocationName = l.Name
                              };
 
                 return result.ToList();

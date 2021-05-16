@@ -21,7 +21,7 @@ namespace CarRental.Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
-        [ValidationAspect(typeof(UserForLoginDTOValidator))]
+        [ValidationAspect(typeof(UserForRegisterDTOValidator))]
         public IDataResult<User> Register(UserForRegisterDTO userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;

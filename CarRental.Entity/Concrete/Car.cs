@@ -9,6 +9,7 @@ namespace CarRental.Entity.Concrete
         public int ID { get; set; }
         public int BrandID { get; set; }
         public int ColorID { get; set; }
+        public int LocationID { get; set; }
         public string Name { get; set; }
         public int ModelYear { get; set; }
         public Decimal DailyPrice { get; set; }
