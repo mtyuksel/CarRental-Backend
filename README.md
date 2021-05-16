@@ -1,5 +1,5 @@
 ### CarRental-Backend
-It is the backend project provides car rental service. Work on this project is still ongoing.
+It is the backend project provides car rental service.
 This project strictly implements the **OOP**, **SOLID** and **AOP** principles. An objective approach was followed throughout the project.
 In addition to the backend project, the frontend part with Angular continues to be developed.
 
