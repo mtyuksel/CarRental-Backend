@@ -4,6 +4,8 @@ using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DataAccess.Concrete.EntityFramework
 {
@@ -16,7 +18,7 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
             this._carImageDal = imageDal;
         }
 
-        public List<CarDetailDTO> GetCarDetails()
+        public async Task<List<CarDetailDTO>> GetCarDetails()
         {
             using (CarRentalContext context = new CarRentalContext())
             {
@@ -34,11 +36,10 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  ModelYear = c.ModelYear,
                                  Brand = b,
                                  Color = clr,
-                                 Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty },
-                                 ImagePaths = _carImageDal.GetAll(img => img.CarID == c.ID).Select(img => img.ImagePath).ToList()
+                                 Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty }
                              };
 
-                return result.ToList();
+                return await result.ToListAsync();
             }
         }
     }

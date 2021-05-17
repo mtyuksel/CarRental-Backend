@@ -2,6 +2,7 @@
 using CarRental.Core.Entity.Abstract;
 using CarRental.Core.Utilities.Results;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CarRental.WebAPI.Controllers
 {
@@ -17,19 +18,19 @@ namespace CarRental.WebAPI.Controllers
         public GenericBaseController(TService tService) => this._tService = tService;
 
         [HttpGet("getall")]
-        public virtual IActionResult GetAll() => GetResponseByResultSuccess(_tService.GetAll());
+        public virtual async Task<IActionResult> GetAll() => GetResponseByResultSuccess(await _tService.GetAll());
 
         [HttpGet("getbyid")]
-        public virtual IActionResult GetByID(int id) => GetResponseByResultSuccess(_tService.GetByID(id));
+        public virtual async Task<IActionResult> GetByID(int id) => GetResponseByResultSuccess(await _tService.GetByID(id));
 
         [HttpPost("add")]
-        public virtual IActionResult Add(TEntity entity) => GetResponseByResultSuccess(_tService.Add(entity));
+        public virtual async Task<IActionResult> Add(TEntity entity) => GetResponseByResultSuccess(await _tService.Add(entity));
 
         [HttpPost("update")]
-        public virtual IActionResult Update(TEntity entity) => GetResponseByResultSuccess(_tService.Update(entity));
+        public virtual async Task<IActionResult> Update(TEntity entity) => GetResponseByResultSuccess(await _tService.Update(entity));
 
         [HttpPost("delete")]
-        public virtual IActionResult Delete(TEntity entity) => GetResponseByResultSuccess(_tService.Delete(entity));
+        public virtual async Task<IActionResult> Delete(TEntity entity) => GetResponseByResultSuccess(await _tService.Delete(entity));
 
         protected IActionResult GetResponseByResultSuccess(IResult result) => result.Success ? Ok(result) : BadRequest(result);
     }

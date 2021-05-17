@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CarRental.WebAPI.Controllers
 {
@@ -33,9 +34,9 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpGet("getallbycarid")]
-        public IActionResult GetAllByCarID(int carID)
+        public async Task<IActionResult> GetAllByCarID(int carID)
         {
-            var result = _carImageService.GetAllImagePathsByCarID(carID);
+            var result = await _carImageService.GetAllImagePathsByCarID(carID);
             string baseUrl = this.Request.Scheme + "://" + this.Request.Host + "/";
 
             if (result.Success)
@@ -47,8 +48,7 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        [SecuredOperation("product.add,admin")]
-        public IActionResult Add([FromForm] FileUpload fileUpload)
+        public async Task<IActionResult> Add([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
@@ -61,7 +61,7 @@ namespace CarRental.WebAPI.Controllers
                 carImage.ImagePath = filename;
                 carImage.Date = DateTime.Now;
 
-                var result = _carImageService.Add(carImage);
+                var result = await _carImageService.Add(carImage);
 
                 if (!result.Success)
                 {
@@ -75,9 +75,9 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(CarImage carImage)
+        public async Task<IActionResult> Delete(CarImage carImage)
         {
-            var result = _carImageService.Delete(carImage);
+            var result = await _carImageService.Delete(carImage);
 
             if (!result.Success)
             {
@@ -88,7 +88,7 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm] FileUpload fileUpload)
+        public async Task<IActionResult> Update([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);
 
@@ -97,7 +97,7 @@ namespace CarRental.WebAPI.Controllers
                 CarImage carImage = JsonConvert.DeserializeObject<CarImage>(fileUpload.CarImage);
                 carImage.Date = DateTime.Now;
 
-                var result = _carImageService.GetByImagePath(carImage.ImagePath);
+                var result = await _carImageService.GetByImagePath(carImage.ImagePath);
 
                 if (!result.Success)
                 {

@@ -7,9 +7,8 @@ using CarRental.Core.Aspects.Autofac.Validation;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -23,37 +22,37 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Add(Customer customer)
+        public async Task<IResult> Add(Customer customer)
         {
-            _customerDal.Add(customer);
+            await _customerDal.Add(customer);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Delete(Customer customer)
+        public async Task<IResult> Delete(Customer customer)
         {
-            _customerDal.Delete(customer);
+            await _customerDal.Delete(customer);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         [CacheAspect(10)]
-        public IDataResult<List<Customer>> GetAll()
+        public async Task<IDataResult<List<Customer>>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
+            return new SuccessDataResult<List<Customer>>(await _customerDal.GetAll());
         }
 
-        public IDataResult<Customer> GetByID(int userID)
+        public async Task<IDataResult<Customer>> GetByID(int userID)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserID == userID));
+            return new SuccessDataResult<Customer>(await _customerDal.Get(c => c.UserID == userID));
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Update(Customer customer)
+        public async Task<IResult> Update(Customer customer)
         {
-            _customerDal.Update(customer);
+            await _customerDal.Update(customer);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }

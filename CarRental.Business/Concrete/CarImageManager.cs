@@ -11,6 +11,7 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -27,11 +28,10 @@ namespace CarRental.Business.Concrete
 
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Add(CarImage carImage)
+        public async Task<IResult> Add(CarImage carImage)
         {
             var result = BusinessRules.Run(
-                _carService.CheckIfCarExists(carImage.CarID),
-                CarImageLogics.CheckIfNumberOfImagesOfCarMax(_carImageDal, carImage.CarID),
+                await _carService.CheckIfCarExists(carImage.CarID),
                 CarImageLogics.CheckIfImagePathUnique(_carImageDal, carImage.ImagePath)
                 );
 
@@ -40,29 +40,29 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _carImageDal.Add(carImage);
+            await _carImageDal.Add(carImage);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Delete(CarImage carImage)
+        public async Task<IResult> Delete(CarImage carImage)
         {
-            var existsImage = _carImageDal.Get(c => c.CarID == carImage.CarID && c.ImagePath == carImage.ImagePath);
+            var existsImage = await _carImageDal.Get(c => c.CarID == carImage.CarID && c.ImagePath == carImage.ImagePath);
 
             if (existsImage == null)
             {
                 return new ErrorResult(Messages.ImagePathNotFound);
             }
 
-            _carImageDal.Delete(existsImage);
+            await _carImageDal.Delete(existsImage);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
                 
         [CacheAspect]
-        public IDataResult<List<CarImage>> GetAll()
+        public async Task<IDataResult<List<CarImage>>> GetAll()
         {
             throw new System.NotImplementedException();
         }
@@ -70,9 +70,9 @@ namespace CarRental.Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        public IDataResult<List<string>> GetAllImagePathsByCarID(int carID)
+        public async Task<IDataResult<List<string>>> GetAllImagePathsByCarID(int carID)
         {
-            var result = _carImageDal.GetImagePathsByCarID(carID);
+            var result = await _carImageDal.GetImagePathsByCarID(carID);
 
             if (result.Count == 0)
             {
@@ -84,9 +84,9 @@ namespace CarRental.Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        public IDataResult<CarImage> GetByID(int ID)
+        public async Task<IDataResult<CarImage>> GetByID(int ID)
         {
-            var result = _carImageDal.Get(c => c.ID == ID);
+            var result = await _carImageDal.Get(c => c.ID == ID);
 
             if (result != null)
             {
@@ -98,9 +98,9 @@ namespace CarRental.Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect(5)]
-        public IDataResult<CarImage> GetByImagePath(string imagePath)
+        public async Task<IDataResult<CarImage>> GetByImagePath(string imagePath)
         {
-            var result = _carImageDal.Get(c => c.ImagePath == imagePath);
+            var result = await _carImageDal.Get(c => c.ImagePath == imagePath);
 
             if (result != null)
             {
@@ -113,10 +113,10 @@ namespace CarRental.Business.Concrete
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         [CacheRemoveAspect("ICarImageManager.Get")]
-        public IResult Update(CarImage carImage)
+        public async Task<IResult> Update(CarImage carImage)
         {
             var result = BusinessRules.Run(
-                _carService.CheckIfCarExists(carImage.CarID),
+                await _carService.CheckIfCarExists(carImage.CarID),
                 CarImageLogics.CheckIfImagePathUnique(_carImageDal, carImage.ImagePath));
 
             if (!result.Success)
@@ -124,8 +124,8 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            var existsCar = _carImageDal.Get(c => c.ImagePath == carImage.ImagePath && c.CarID == carImage.CarID);
-            _carImageDal.Update(existsCar);
+            var existsCar = await _carImageDal.Get(c => c.ImagePath == carImage.ImagePath && c.CarID == carImage.CarID);
+            await _carImageDal.Update(existsCar);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }

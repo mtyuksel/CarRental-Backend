@@ -12,7 +12,7 @@ using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -27,33 +27,32 @@ namespace CarRental.Business.Concrete
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("IProductService.Get")]
-        public IResult Add(Car car)
+        public async Task<IResult> Add(Car car)
         {
             IResult result = BusinessRules.Run(
-                CarLogics.CheckIfCarNotExists(_carDal, car),
-                CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
+                CarLogics.CheckIfCarNotExists(_carDal, car));
 
             if (!result.Success)
             {
                 return result;
             }
 
-            _carDal.Add(car);
+            await _carDal.Add(car);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
-        public IResult Delete(Car car)
+        public async Task<IResult> Delete(Car car)
         {
-            _carDal.Delete(car);
+            await _carDal.Delete(car);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         [CacheAspect(10)]
-        public IDataResult<List<Car>> GetAll()
+        public async Task<IDataResult<List<Car>>> GetAll()
         {
             IResult result = BusinessRules.Run(CarLogics.CheckIfSystemAtMaintenanceTime());
 
@@ -62,42 +61,41 @@ namespace CarRental.Business.Concrete
                 return new ErrorDataResult<List<Car>>(result.Message);
             }
 
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+            return new SuccessDataResult<List<Car>>(await _carDal.GetAll());
         }
 
         [CacheAspect]
-        public IDataResult<Car> GetByID(int ID)
+        public async Task<IDataResult<Car>> GetByID(int ID)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.ID == ID));
+            return new SuccessDataResult<Car>(await _carDal.Get(c => c.ID == ID));
         }
 
-        public IDataResult<List<CarDetailDTO>> GetCarDetails()
+        public async Task<IDataResult<List<CarDetailDTO>>> GetCarDetails()
         {
-            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());
+            return new SuccessDataResult<List<CarDetailDTO>>(await _carDal.GetCarDetails());
         }
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
-        public IResult Update(Car car)
+        public async Task<IResult> Update(Car car)
         {
             IResult result = BusinessRules.Run(
-                CarLogics.CheckIfCarExists(_carDal, car),
-                CarLogics.CheckIfCarCountOfBrandCorrect(_carDal, car.BrandID));
+                CarLogics.CheckIfCarExists(_carDal, car));
 
             if (!result.Success)
             {
                 return result;
             }
 
-            _carDal.Update(car);
+            await _carDal.Update(car);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }
 
         [TransactionScopeAspect]
-        public IResult CheckIfCarExists(int ID)
+        public async Task<IResult> CheckIfCarExists(int ID)
         {
-            var result = GetByID(ID);
+            var result = await GetByID(ID);
 
             if (result.Data != null)
             {

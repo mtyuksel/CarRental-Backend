@@ -7,6 +7,7 @@ using CarRental.Core.Utilities.Results;
 using CarRental.Core.Utilities.Security.Hashing;
 using CarRental.Core.Utilities.Security.JWT;
 using CarRental.Entity.DTOs;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -22,7 +23,7 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(UserForRegisterDTOValidator))]
-        public IDataResult<User> Register(UserForRegisterDTO userForRegisterDto, string password)
+        public async Task<IDataResult<User>> Register(UserForRegisterDTO userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -36,15 +37,15 @@ namespace CarRental.Business.Concrete
                 Status = true
             };
 
-            _userService.Add(user);
+            await _userService.Add(user);
 
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
         [ValidationAspect(typeof(UserForLoginDTOValidator))]
-        public IDataResult<User> Login(UserForLoginDTO userForLoginDto)
+        public async Task<IDataResult<User>> Login(UserForLoginDTO userForLoginDto)
         {
-            var userToCheck = _userService.GetByMail(userForLoginDto.Email);
+            var userToCheck = await _userService.GetByMail(userForLoginDto.Email);
             if (userToCheck == null)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
@@ -58,9 +59,9 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
         }
 
-        public IResult UserExists(string email)
+        public async Task<IResult> UserExists(string email)
         {
-            var result = _userService.GetByMail(email);
+            var result = await _userService.GetByMail(email);
 
             if (result.Success == true)
             {
@@ -71,9 +72,9 @@ namespace CarRental.Business.Concrete
         }
 
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
+        public async Task<IDataResult<AccessToken>> CreateAccessToken(User user)
         {
-            var claims = _userService.GetClaims(user);
+            var claims = await _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims.Data);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }

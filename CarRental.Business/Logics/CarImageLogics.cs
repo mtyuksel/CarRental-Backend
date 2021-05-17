@@ -6,12 +6,12 @@ namespace CarRental.Business.Logics
 {
     public class CarImageLogics
     {
-        public static IResult CheckIfNumberOfImagesOfCarMax(ICarImageDal carImageDal,int carID)
-        {
-            var result = carImageDal.GetAll(c => c.CarID == carID);
+        //public static IResult CheckIfNumberOfImagesOfCarMax(ICarImageDal carImageDal,int carID)
+        //{
+        //    var result = carImageDal.GetAll(c => c.CarID == carID);
 
-            return result.Count < 5 ? new SuccessResult() : new ErrorResult(Messages.CarImageLimitExceeded); 
-        }
+        //    return result.Count < 5 ? new SuccessResult() : new ErrorResult(Messages.CarImageLimitExceeded); 
+        //}
 
         public static IResult CheckIfImagePathUnique(ICarImageDal carImageDal, string imagePath)
         {

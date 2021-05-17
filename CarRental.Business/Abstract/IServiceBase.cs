@@ -1,14 +1,15 @@
 ﻿using CarRental.Core.Utilities.Results;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Abstract
 {
     public interface IServiceBase<T>
     {
-        IDataResult<List<T>> GetAll();
-        IDataResult<T> GetByID(int ID);
-        IResult Add(T entity); 
-        IResult Update(T entity);
-        IResult Delete(T entity);
+        Task<IDataResult<List<T>>> GetAll();
+        Task<IDataResult<T>> GetByID(int ID);
+        Task<IResult> Add(T entity);
+        Task<IResult> Update(T entity);
+        Task<IResult> Delete(T entity);
     }
 }

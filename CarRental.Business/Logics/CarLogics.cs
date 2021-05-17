@@ -28,12 +28,12 @@ namespace CarRental.Business.Logics
             return result != null ? new SuccessResult() : new ErrorResult(Messages.NotExist("car"));
         }
 
-        public static IResult CheckIfCarCountOfBrandCorrect(ICarDal carDal, int brandID)
-        {
-            var result = carDal.GetAll(c => c.BrandID == brandID);
+        //public static IResult CheckIfCarCountOfBrandCorrect(ICarDal carDal, int brandID)
+        //{
+        //    var result = carDal.GetAll(c => c.BrandID == brandID);
 
-            return result.Count <= 3 ? new SuccessResult() : new ErrorResult(Messages.CountOfCarForBrandError);
-        }
+        //    return result.Count <= 3 ? new SuccessResult() : new ErrorResult(Messages.CountOfCarForBrandError);
+        //}
 
         public static IResult CheckIfSystemAtMaintenanceTime() => DateTime.Now.Hour == 8 ? new ErrorResult(Messages.MaintenanceTime) : new SuccessResult();
     }

@@ -10,6 +10,7 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -25,7 +26,7 @@ namespace CarRental.Business.Concrete
 
         [SecuredOperation("color.add,admin")]
         [ValidationAspect(typeof(ColorValidator))]
-        public IResult Add(Color color)
+        public async Task<IResult> Add(Color color)
         {
             var result = BusinessRules.Run(ColorLogics.CheckIfColorAlreadyExist(_colorDal, color));
 
@@ -34,7 +35,7 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _colorDal.Add(color);
+            await _colorDal.Add(color);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
@@ -42,28 +43,28 @@ namespace CarRental.Business.Concrete
         [SecuredOperation("color.delete,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         [CacheRemoveAspect("IColorService.Get")]
-        public IResult Delete(Color color)
+        public async Task<IResult> Delete(Color color)
         {
-            _colorDal.Add(color);
+            await _colorDal.Add(color);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         [SecuredOperation("admin")]
         [CacheAspect]
-        public IDataResult<List<Color>> GetAll()
+        public async Task<IDataResult<List<Color>>> GetAll()
         {
-            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
+            return new SuccessDataResult<List<Color>>(await _colorDal.GetAll());
         }
 
-        public IDataResult<Color> GetByID(int ID)
+        public async Task<IDataResult<Color>> GetByID(int ID)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ID == ID));
+            return new SuccessDataResult<Color>(await _colorDal.Get(c => c.ID == ID));
         }
 
         [ValidationAspect(typeof(ColorValidator))]
         [CacheRemoveAspect("ICarImageManager.Get")]
-        public IResult Update(Color color)
+        public async Task<IResult> Update(Color color)
         {
             var result = BusinessRules.Run(ColorLogics.CheckIfColorAlreadyExist(_colorDal, color));
 
@@ -72,7 +73,7 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _colorDal.Update(color);
+            await _colorDal.Update(color);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }

@@ -3,6 +3,7 @@ using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CarRental.WebAPI.Controllers
 {
@@ -15,10 +16,10 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpGet("getcardetails")]
-        public IActionResult GetCarDetails()
+        public async Task<IActionResult> GetCarDetails()
         {
-            Thread.Sleep(5000);
-            return base.GetResponseByResultSuccess(base._tService.GetCarDetails());
+            Thread.Sleep(50000);
+            return base.GetResponseByResultSuccess(await base._tService.GetCarDetails());
         }
     }
 } 

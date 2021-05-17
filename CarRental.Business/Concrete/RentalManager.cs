@@ -9,6 +9,7 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -26,12 +27,12 @@ namespace CarRental.Business.Concrete
 
         [SecuredOperation("admin,salesPerson,rental.add")]
         [ValidationAspect(typeof(RentalValidator))]
-        public IResult Add(Rental rental)
+        public async Task<IResult> Add(Rental rental)
         {
             var result = BusinessRules.Run(
                 RentalLogics.CheckIfCarExistForGivenID(_carService, rental.CarID),
-                RentalLogics.CheckIfCustomerExistForGivenID(_customerService, rental.CustomerID),
-                RentalLogics.CheckIfCarAlreadyRented(_rentalDal, rental)
+                RentalLogics.CheckIfCustomerExistForGivenID(_customerService, rental.CustomerID)
+                //RentalLogics.CheckIfCarAlreadyRented(_rentalDal, rental)
                 );
 
             if (result != null)
@@ -39,31 +40,31 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _rentalDal.Add(rental);
+            await _rentalDal.Add(rental);
 
             return new SuccessResult();
         }
 
         [ValidationAspect(typeof(RentalValidator))]
-        public IResult Delete(Rental rental)
+        public async Task<IResult> Delete(Rental rental)
         {
-            _rentalDal.Delete(rental);
+            await _rentalDal.Delete(rental);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
-        public IDataResult<List<Rental>> GetAll()
+        public async Task<IDataResult<List<Rental>>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
+            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAll());
         }
 
-        public IDataResult<Rental> GetByID(int ID)
+        public async Task<IDataResult<Rental>> GetByID(int ID)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.ID == ID));
+            return new SuccessDataResult<Rental>(await _rentalDal.Get(r => r.ID == ID));
         }
 
         [ValidationAspect(typeof(RentalValidator))]
-        public IResult Update(Rental rental)
+        public async Task<IResult> Update(Rental rental)
         {
             var result = BusinessRules.Run(
                 RentalLogics.CheckIfCarExistForGivenID(_carService, rental.CarID),
@@ -75,7 +76,7 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _rentalDal.Update(rental);
+            await _rentalDal.Update(rental);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }

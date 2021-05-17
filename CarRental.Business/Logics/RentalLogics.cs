@@ -34,16 +34,16 @@ namespace CarRental.Business.Logics
             return new ErrorResult(Messages.NotExist("customer"));
         }
 
-        public static IResult CheckIfCarAlreadyRented(IRentalDal rentalDal, Rental rental)
-        {
-            var existRental = rentalDal.GetAll(r => r.CarID == rental.CarID).OrderBy(r => r.RentDate).FirstOrDefault();
+        //public static IResult CheckIfCarAlreadyRented(IRentalDal rentalDal, Rental rental)
+        //{
+        //    var existRental = rentalDal.GetAll(r => r.CarID == rental.CarID).OrderBy(r => r.RentDate).FirstOrDefault();
 
-            if (existRental == null || (existRental.ReturnDate != null && existRental.ReturnDate < DateTime.Now))
-            {
-                return new SuccessResult();
-            }
+        //    if (existRental == null || (existRental.ReturnDate != null && existRental.ReturnDate < DateTime.Now))
+        //    {
+        //        return new SuccessResult();
+        //    }
 
-            return new ErrorResult(Messages.CarAlreadyRented);
-        }
+        //    return new ErrorResult(Messages.CarAlreadyRented);
+        //}
     }
 }

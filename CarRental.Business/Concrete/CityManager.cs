@@ -2,6 +2,7 @@
 using CarRental.Core.Utilities.Results;
 using CarRental.Entity.Concrete;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -14,27 +15,27 @@ namespace CarRental.Business.Concrete
             this._cityDal = cityDal;
         }
 
-        public IResult Add(City entity)
+        public async Task<IResult> Add(City entity)
         {
             throw new System.NotImplementedException();
         }
 
-        public IResult Delete(City entity)
+        public async Task<IResult> Delete(City entity)
         {
             throw new System.NotImplementedException();
         }
 
-        public IDataResult<List<City>> GetAll()
+        public async Task<IDataResult<List<City>>> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
-        public IDataResult<City> GetByID(int ID)
+        public async Task<IDataResult<City>> GetByID(int ID)
         {
             throw new System.NotImplementedException();
         }
 
-        public IResult Update(City entity)
+        public async Task<IResult> Update(City entity)
         {
             throw new System.NotImplementedException();
         }

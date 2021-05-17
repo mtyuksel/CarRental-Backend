@@ -2,14 +2,15 @@
 using CarRental.Core.Utilities.Results;
 using CarRental.Core.Utilities.Security.JWT;
 using CarRental.Entity.DTOs;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Abstract
 {
     public interface IAuthService
     {
-        IDataResult<User> Register(UserForRegisterDTO userForRegisterDTO, string password);
-        IDataResult<User> Login(UserForLoginDTO userForRegisterDTO);
-        IResult UserExists(string email);
-        IDataResult<AccessToken> CreateAccessToken(User user);
+        Task<IDataResult<User>> Register(UserForRegisterDTO userForRegisterDTO, string password);
+        Task<IDataResult<User>> Login(UserForLoginDTO userForRegisterDTO);
+        Task<IResult> UserExists(string email);
+        Task<IDataResult<AccessToken>> CreateAccessToken(User user);
     }
 }

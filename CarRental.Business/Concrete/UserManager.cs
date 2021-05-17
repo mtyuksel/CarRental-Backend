@@ -9,6 +9,7 @@ using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -22,14 +23,14 @@ namespace CarRental.Business.Concrete
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        public async Task<IDataResult<List<OperationClaim>>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
-        public IDataResult<User> GetByMail(string email)
+        public async Task<IDataResult<User>> GetByMail(string email)
         {
-            var result = _userDal.Get(u => u.Email == email);
+            var result = await _userDal.Get(u => u.Email == email);
 
             if (result == null)
             {
@@ -40,7 +41,7 @@ namespace CarRental.Business.Concrete
         }
 
         //[ValidationAspect(typeof(UserValidator))]
-        public IResult Add(User user)
+        public async Task<IResult> Add(User user)
         {
             IResult result = BusinessRules.Run(UserLogics.CheckIfEmailAlreadyExist(_userDal, user.Email));
 
@@ -49,32 +50,32 @@ namespace CarRental.Business.Concrete
                 return result;
             }
             
-            _userDal.Add(user);
+            await _userDal.Add(user);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Delete(User user)
+        public async Task<IResult> Delete(User user)
         {
-            _userDal.Delete(user);
+            await _userDal.Delete(user);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         [CacheAspect(10)]
-        public IDataResult<List<User>> GetAll()
+        public async Task< IDataResult<List<User>>> GetAll()
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll());
+            return new SuccessDataResult<List<User>>(await _userDal.GetAll());
         }
 
-        public IDataResult<User> GetByID(int ID)
+        public async Task< IDataResult<User>> GetByID(int ID)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.ID == ID));
+            return new SuccessDataResult<User>(await _userDal.Get(u => u.ID == ID));
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User user)
+        public async Task< IResult> Update(User user)
         {
             IResult result = BusinessRules.Run(UserLogics.CheckIfEmailAlreadyExist(_userDal, user.Email));
 
@@ -83,7 +84,7 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _userDal.Update(user);
+            await _userDal.Update(user);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }

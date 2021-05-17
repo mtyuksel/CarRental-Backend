@@ -9,9 +9,8 @@ using CarRental.Core.Utilities.Business;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CarRental.Business.Concrete
 {
@@ -26,7 +25,7 @@ namespace CarRental.Business.Concrete
 
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
-        public IResult Add(Brand brand)
+        public async Task<IResult> Add(Brand brand)
         {
             var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));
 
@@ -35,36 +34,36 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _brandDal.Add(brand);
+            await _brandDal.Add(brand);
 
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
-        public IResult Delete(Brand brand)
+        public async Task<IResult> Delete(Brand brand)
         {
-            _brandDal.Delete(brand);
+            await _brandDal.Delete(brand);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         [CacheAspect(30)]
         [PerformanceAspect(5)]
-        public IDataResult<List<Brand>> GetAll()
+        public async Task<IDataResult<List<Brand>>> GetAll()
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
+            return new SuccessDataResult<List<Brand>>(await _brandDal.GetAll());
         }
 
         [CacheAspect(10)]
-        public IDataResult<Brand> GetByID(int ID)
+        public async Task<IDataResult<Brand>> GetByID(int ID)
         {
-            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.ID == ID));
+            return new SuccessDataResult<Brand>(await _brandDal.Get(b => b.ID == ID));
         }
 
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
-        public IResult Update(Brand brand)
+        public async Task<IResult> Update(Brand brand)
         {
             var result = BusinessRules.Run(BrandLogics.CheckIfBrandAlreadyExist(_brandDal, brand));
 
@@ -73,7 +72,7 @@ namespace CarRental.Business.Concrete
                 return result;
             }
 
-            _brandDal.Update(brand);
+            await _brandDal.Update(brand);
 
             return new SuccessResult(Messages.SuccesfullyUpdated);
         }
