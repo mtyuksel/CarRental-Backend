@@ -2,6 +2,8 @@
 using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Core.Utilities.Results;
 using CarRental.Entity.Concrete;
+using CarRental.WebAPI.Helpers;
+using CarRental.WebAPI.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,39 +32,18 @@ namespace CarRental.WebAPI.Controllers
             _defaultPath = _environment.WebRootPath + "\\Images\\System\\";
         }
 
-        public class FileUpload
-        {
-            public Guid ID { get { return Guid.NewGuid(); } }
-            public IFormFile Files { get; set; }
-            public string CarImage { get; set; }
-        }
-
         [HttpGet("getallbycarid")]
         public IActionResult GetAllByCarID(int carID)
         {
             var result = _carImageService.GetAllImagePathsByCarID(carID);
+            string baseUrl = this.Request.Scheme + "://" + this.Request.Host + "/";
 
             if (result.Success)
             {
-                return GetImages(result.Data, _uploadPath);
+                return GetResponseByResultSuccess(ImageHelpers.Get(baseUrl, result.Data, _uploadPath));
             }
 
-            return GetImages(new List<string> { _defaultImageName }, _defaultPath);
-        }
-
-        private IActionResult GetImages(List<string> imagePaths, string filePath)
-        {
-            List<string> imageURLs = new List<string>();
-            string baseUrl = this.Request.Scheme + "://" + this.Request.Host + "/";
-            filePath = filePath.Substring(filePath.IndexOf("Images\\")).Replace("\\", @"/");
-
-            foreach (var imagePath in imagePaths)
-            {
-                string path = baseUrl + filePath + imagePath;
-                imageURLs.Add(path);
-            }
-
-            return GetResponseByResultSuccess(imageURLs.Count > 0 ? new SuccessDataResult<List<string>>(imageURLs) : new ErrorDataResult<List<string>>("Files cannot found!"));
+            return GetResponseByResultSuccess(ImageHelpers.Get(baseUrl, new List<string> { _defaultImageName }, _defaultPath));
         }
 
         [HttpPost("add")]
@@ -87,7 +68,7 @@ namespace CarRental.WebAPI.Controllers
                     return GetResponseByResultSuccess(result);
                 }
 
-                return GetResponseByResultSuccess(SaveImage(fileUpload, filename));
+                return GetResponseByResultSuccess(ImageHelpers.Save(fileUpload, _uploadPath, filename));
             }
 
             return GetResponseByResultSuccess(fileCheck);
@@ -103,7 +84,7 @@ namespace CarRental.WebAPI.Controllers
                 return GetResponseByResultSuccess(result);
             }
 
-            return GetResponseByResultSuccess(DeleteImage(carImage.ImagePath));
+            return GetResponseByResultSuccess(ImageHelpers.Delete(_uploadPath, carImage.ImagePath));
         }
 
         [HttpPost("update")]
@@ -123,50 +104,10 @@ namespace CarRental.WebAPI.Controllers
                     return GetResponseByResultSuccess(result);
                 }
 
-                return GetResponseByResultSuccess(UpdateImage(fileUpload, carImage.ImagePath));
+                return GetResponseByResultSuccess(ImageHelpers.Update(fileUpload, _uploadPath, carImage.ImagePath));
             }
 
             return GetResponseByResultSuccess(fileCheck);
-        }
-
-        private IResult SaveImage(FileUpload fileUpload, string fileName)
-        {
-
-            if (Directory.Exists(_uploadPath))
-            {
-                using (FileStream fileStream = System.IO.File.Create(_uploadPath + fileName))
-                {
-                    fileUpload.Files.CopyTo(fileStream);
-                    fileStream.Flush();
-
-                    return new SuccessResult("File Added.");
-                }
-            }
-
-            return new ErrorResult("There is an error occured while image adding!");
-        }
-
-        private IResult UpdateImage(FileUpload fileUpload, string fileName)
-        {
-            if (Directory.Exists(_uploadPath))
-            {
-                using (FileStream fileStream = System.IO.File.OpenWrite(_uploadPath + fileName))
-                {
-                    fileUpload.Files.CopyTo(fileStream);
-                    fileStream.Flush();
-
-                    return new SuccessResult("File Updated.");
-                }
-            }
-
-            return new ErrorResult("There is an error occured while image updating!");
-        }
-
-        private IResult DeleteImage(string imagePath)
-        {
-            System.IO.File.Delete(_uploadPath + imagePath);
-
-            return new SuccessResult("File Deleted.");
         }
 
         private IResult CheckIfFileUploaded(IFormFile formFile)
