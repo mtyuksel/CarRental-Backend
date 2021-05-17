@@ -71,7 +71,6 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(c => c.ID == ID));
         }
 
-        [SecuredOperation("car.getCarDetails,admin")]
         public IDataResult<List<CarDetailDTO>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());

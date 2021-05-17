@@ -9,6 +9,13 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<CarRentalContext, Car>, ICarDal
     {
+        ICarImageDal _carImageDal;
+
+        public EfCarDal(ICarImageDal imageDal)
+        {
+            this._carImageDal = imageDal;
+        }
+
         public List<CarDetailDTO> GetCarDetails()
         {
             using (CarRentalContext context = new CarRentalContext())
@@ -28,6 +35,7 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  Brand = b,
                                  Color = clr,
                                  Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty },
+                                 ImagePaths = _carImageDal.GetAll(img => img.CarID == c.ID).Select(img => img.ImagePath).ToList()
                              };
 
                 return result.ToList();

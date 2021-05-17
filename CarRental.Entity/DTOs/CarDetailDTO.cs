@@ -2,7 +2,6 @@
 using CarRental.Entity.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CarRental.Entity.DTOs
 {
@@ -16,5 +15,6 @@ namespace CarRental.Entity.DTOs
         public int ModelYear { get; set; }
         public Decimal DailyPrice { get; set; }
         public string Description { get; set; }
+        public List<string> ImagePaths { get; set; }
     }
 }
