@@ -20,14 +20,14 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                              join cty in context.Cities on l.CityID equals cty.ID
                              select new CarDetailDTO
                              {
-                                 CarID = c.ID,
-                                 CarName = c.Name,
+                                 ID = c.ID,
+                                 Name = c.Name,
                                  DailyPrice = c.DailyPrice,
                                  Description = c.Description,
                                  ModelYear = c.ModelYear,
                                  Brand = b,
                                  Color = clr,
-                                 Location = new LocationDTO { LocationID = l.ID, City = cty },
+                                 Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty },
                              };
 
                 return result.ToList();

@@ -8,8 +8,8 @@ namespace CarRental.Entity.DTOs
 {
     public class CarDetailDTO : IDTO
     {
-        public int CarID { get; set; }
-        public string CarName { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
         public Brand Brand { get; set;}
         public Color Color { get; set; }
         public LocationDTO Location { get; set; }
