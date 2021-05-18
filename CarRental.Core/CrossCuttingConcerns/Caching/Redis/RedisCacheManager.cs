@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 
@@ -29,7 +28,7 @@ namespace CarRental.Core.CrossCuttingConcerns.Caching.Redis
         public object Get(string key)
         {
             var db = _connectionMultiplexer.GetDatabase();
-            return JsonConvert.DeserializeObject<object>(db.StringGet(key));
+            return db.StringGet(key);
         }
 
         public bool IsAdded(string key)

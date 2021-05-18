@@ -24,12 +24,10 @@ namespace CarRental.Core.DependencyResolvers
             serviceCollection.AddMemoryCache();
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            var test = _config.GetSection("RedisConnectionString").Value;
+            //serviceCollection.AddSingleton<IConnectionMultiplexer>(provider =>
+            //ConnectionMultiplexer.Connect(_config.GetSection("RedisConnectionString").Value));
 
-            serviceCollection.AddSingleton<IConnectionMultiplexer>(provider =>
-            ConnectionMultiplexer.Connect(_config.GetSection("RedisConnectionString").Value));
-
-            serviceCollection.AddSingleton<ICacheManager, RedisCacheManager>();
+            serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
             serviceCollection.AddSingleton<Stopwatch>();
         }
     }

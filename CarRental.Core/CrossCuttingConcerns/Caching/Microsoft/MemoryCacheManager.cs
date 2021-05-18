@@ -29,6 +29,7 @@ namespace CarRental.Core.CrossCuttingConcerns.Caching.Microsoft
 
         public object Get(string key)
         {
+            var test = _memoryCache.Get(key);
             return _memoryCache.Get(key);
         }
 
