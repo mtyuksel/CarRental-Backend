@@ -8,6 +8,7 @@ using CarRental.DataAccess.Abstract;
 using CarRental.DataAccess.Concrete.EntityFramework;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
+using StackExchange.Redis;
 
 namespace CarRental.Business.DependencyResolvers.Autofac
 {

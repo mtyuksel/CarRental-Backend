@@ -17,7 +17,7 @@ namespace CarRental.WebAPI.Controllers
         [HttpGet("getcardetails")]
         public IActionResult GetCarDetails()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(50000);
             return base.GetResponseByResultSuccess(base._tService.GetCarDetails());
         }
     }
