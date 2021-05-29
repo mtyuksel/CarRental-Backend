@@ -1,4 +1,3 @@
-using CarRental.Core.CrossCuttingConcerns.Caching.Redis;
 using CarRental.Core.DependencyResolvers;
 using CarRental.Core.Extensions;
 using CarRental.Core.Utilities.IoC;
@@ -62,6 +61,8 @@ namespace CarRental.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "http://localhost:58826").AllowAnyHeader());
 
