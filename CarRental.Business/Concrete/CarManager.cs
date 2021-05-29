@@ -1,5 +1,4 @@
 ﻿using CarRental.Business.Abstract;
-using CarRental.Business.BusinessAspects.Autofac;
 using CarRental.Business.Constants;
 using CarRental.Business.Logics;
 using CarRental.Business.ValidationRules.FluentValidation;
