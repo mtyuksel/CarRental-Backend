@@ -10,6 +10,7 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
+using System;
 using System.Collections.Generic;
 
 
@@ -68,6 +69,11 @@ namespace CarRental.Business.Concrete
         public IDataResult<Car> GetByID(int ID)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.ID == ID));
+        }
+
+        public IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID)
+        {
+            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetDetailedCarsByLocation(locationID));
         }
 
         public IDataResult<List<CarDetailDTO>> GetCarDetails()

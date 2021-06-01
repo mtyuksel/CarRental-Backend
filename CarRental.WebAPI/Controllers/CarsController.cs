@@ -19,5 +19,12 @@ namespace CarRental.WebAPI.Controllers
         {
             return base.GetResponseByResultSuccess(base._tService.GetCarDetails());
         }
+
+        [HttpGet("getbylocation")]
+        public IActionResult GetByLocation(int locationID)
+        {
+            return base.GetResponseByResultSuccess(base._tService.GetDetailedCarsByLocation(locationID));
+        }
+
     }
 } 

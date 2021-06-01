@@ -20,13 +20,15 @@ namespace CarRental.Core.Aspects.Autofac.Caching
 
         public override void Intercept(IInvocation invocation)
         {
-            string methodFullName = invocation.Method.ReflectedType.FullName;
-            var methodName = string.Format($"{methodFullName.Substring(0, methodFullName.IndexOf("`1"))}.{invocation.Method.Name}");
+            string proxyName = invocation.Proxy.ToString();
+            string serviceInterfaceName = proxyName.Split('.').Last().Replace("Proxy", "");
+            var methodName = string.Format($"{serviceInterfaceName}.{invocation.Method.Name}");
             var arguments = invocation.Arguments.ToList();
             var key = $"{methodName}({string.Join(",", arguments.Select(x => x?.ToString() ?? "<Null>"))})";
 
             if (_cacheManager.IsAdded(key))
             {
+                var test = _cacheManager.Get(key);
                 invocation.ReturnValue = _cacheManager.Get(key);
                 return;
             }
