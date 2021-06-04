@@ -15,6 +15,6 @@ namespace CarRental.Entity.DTOs
         public int ModelYear { get; set; }
         public Decimal DailyPrice { get; set; }
         public string Description { get; set; }
-        public List<string> ImagePaths { get; set; }
+        public List<CarImage> Images { get; set; }
     }
 }

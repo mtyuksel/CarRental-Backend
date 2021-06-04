@@ -7,10 +7,10 @@ using CarRental.WebAPI.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CarRental.WebAPI.Controllers
 {
@@ -22,14 +22,16 @@ namespace CarRental.WebAPI.Controllers
         public static IWebHostEnvironment _environment;
         private string _uploadPath;
         private string _defaultPath;
-        private string _defaultImageName = "default-car.png";
+        private string _defaultImageName;
 
-        public CarImagesController(ICarImageService carImageService, IWebHostEnvironment environment)
+        public CarImagesController(ICarImageService carImageService, IWebHostEnvironment environment, IConfiguration configuration)
         {
             this._carImageService = carImageService;
             _environment = environment;
-            _uploadPath = _environment.WebRootPath + "\\Images\\Uploads\\";
-            _defaultPath = _environment.WebRootPath + "\\Images\\System\\";
+
+            this._uploadPath = _environment.WebRootPath + configuration.GetSection("DefaultOptions").GetSection("Image").GetSection("UploadPath").Value;
+            this._defaultPath = _environment.WebRootPath + configuration.GetSection("DefaultOptions").GetSection("Image").GetSection("DefaultUploadPath").Value;
+            this._defaultImageName = configuration.GetSection("DefaultOptions").GetSection("Image").GetSection("DefaultName").Value;
         }
 
         [HttpGet("getallbycarid")]

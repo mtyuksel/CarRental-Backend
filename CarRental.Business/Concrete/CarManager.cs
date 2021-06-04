@@ -10,7 +10,6 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using CarRental.Entity.DTOs;
-using System;
 using System.Collections.Generic;
 
 
@@ -71,14 +70,14 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(c => c.ID == ID));
         }
 
-        public IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID)
+        public IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID, string uploadPath, string defaultImageFullPath)
         {
-            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetDetailedCarsByLocation(locationID));
+            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetDetailedCarsByLocation(locationID, uploadPath, defaultImageFullPath));
         }
 
-        public IDataResult<List<CarDetailDTO>> GetCarDetails()
+        public IDataResult<List<CarDetailDTO>> GetCarDetails(string uploadPath, string defaultImageFullPath)
         {
-            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());
+            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails(uploadPath, defaultImageFullPath));
         }
 
         [ValidationAspect(typeof(CarValidator))]

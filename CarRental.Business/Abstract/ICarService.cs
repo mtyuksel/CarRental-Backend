@@ -8,8 +8,8 @@ namespace CarRental.Business.Abstract
 {
     public interface ICarService : IServiceBase<Car>
     {
-        IDataResult<List<CarDetailDTO>> GetCarDetails();
-        IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID);
+        IDataResult<List<CarDetailDTO>> GetCarDetails(string uploadPath, string defaultImageFullPath);
+        IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID, string uploadPath, string defaultImageFullPath);
         IResult CheckIfCarExists(int ID);
     }
 }

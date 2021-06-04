@@ -10,7 +10,7 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<CarRentalContext, Car>, ICarDal
     {
-        public List<CarDetailDTO> GetCarDetails()
+        public List<CarDetailDTO> GetCarDetails(string uploadPath, string defaultImageFullPath)
         {
             using (CarRentalContext context = new CarRentalContext())
             {
@@ -29,13 +29,16 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  Brand = b,
                                  Color = clr,
                                  Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty },
+                                 Images = (context.CarImages.Any(i => i.CarID == c.ID))
+                                     ? context.CarImages.Where(i => i.CarID == c.ID).Select(i => new CarImage { ID = i.ID, CarID = i.CarID, Date = i.Date, ImagePath = uploadPath + i.ImagePath }).ToList()
+                                     : new List<CarImage>() { new CarImage { ID = 0, CarID = c.ID, Date = DateTime.Now, ImagePath = defaultImageFullPath } }
                              };
-
+                
                 return result.ToList();
             }
         }
 
-        public List<CarDetailDTO> GetDetailedCarsByLocation(int locationID)
+        public List<CarDetailDTO> GetDetailedCarsByLocation(int locationID, string uploadPath, string defaultImageFullPath)
         {
             using (CarRentalContext context = new CarRentalContext())
             {
@@ -56,6 +59,9 @@ namespace CarRental.DataAccess.Concrete.EntityFramework
                                  Brand = b,
                                  Color = clr,
                                  Location = new LocationDTO { ID = l.ID, Name = l.Name, City = cty },
+                                 Images = (context.CarImages.Any(i => i.CarID == c.ID))
+                                     ? context.CarImages.Where(i => i.CarID == c.ID).Select(i => new CarImage { ID = i.ID, CarID = i.CarID, Date = i.Date, ImagePath = uploadPath + i.ImagePath }).ToList()
+                                     : new List<CarImage>() { new CarImage { ID = 0, CarID = c.ID, Date = DateTime.Now, ImagePath = defaultImageFullPath } }
                              };
 
                 return result.ToList();
