@@ -9,6 +9,7 @@ namespace CarRental.Business.ValidationRules.FluentValidation
         {
             RuleFor(b => b.Name).NotEmpty();
             RuleFor(b => b.Name).MinimumLength(2);
+            RuleFor(b => b.Name).NotEqual("T");
         }
     }
 }
