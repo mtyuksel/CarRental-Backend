@@ -25,7 +25,7 @@ namespace CarRental.MVCWebUI.Controllers
 
         public IActionResult Index()
         {
-            var result = _carService.GetCarDetails();
+            //var result = _carService.GetCarDetails();
             //_colorService.Add(new Entity.Concrete.Color { Name = "Kırmızı" });
 
             return View();
