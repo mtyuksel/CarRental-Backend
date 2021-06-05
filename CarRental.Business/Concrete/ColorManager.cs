@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace CarRental.Business.Concrete
 {
-    [SecuredOperation("color,admin")]
+    //[SecuredOperation("color,admin")]
     public class ColorManager : IColorService
     {
         private IColorDal _colorDal;
@@ -23,8 +23,9 @@ namespace CarRental.Business.Concrete
             this._colorDal = colorDal;
         }
 
-        [SecuredOperation("color.add,admin")]
+        //[SecuredOperation("color.add,admin")]
         [ValidationAspect(typeof(ColorValidator))]
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Add(Color color)
         {
             var result = BusinessRules.Run(ColorLogics.CheckIfColorAlreadyExist(_colorDal, color));
@@ -39,17 +40,17 @@ namespace CarRental.Business.Concrete
             return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
-        [SecuredOperation("color.delete,admin")]
+        //[SecuredOperation("color.delete,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         [CacheRemoveAspect("IColorService.Get")]
         public IResult Delete(Color color)
         {
-            _colorDal.Add(color);
+            _colorDal.Delete(color);
 
             return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [CacheAspect]
         public IDataResult<List<Color>> GetAll()
         {
