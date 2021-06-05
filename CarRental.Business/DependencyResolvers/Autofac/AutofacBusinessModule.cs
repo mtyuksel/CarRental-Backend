@@ -7,8 +7,6 @@ using CarRental.Core.Utilities.Security.JWT;
 using CarRental.DataAccess.Abstract;
 using CarRental.DataAccess.Concrete.EntityFramework;
 using Castle.DynamicProxy;
-using Microsoft.AspNetCore.Http;
-using StackExchange.Redis;
 
 namespace CarRental.Business.DependencyResolvers.Autofac
 {
@@ -23,6 +21,8 @@ namespace CarRental.Business.DependencyResolvers.Autofac
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
+            builder.RegisterType<LocationManager>().As<ILocationService>().SingleInstance();
+            builder.RegisterType<CityManager>().As<ICityService>().SingleInstance();
             builder.RegisterType<AuthManager>().As<IAuthService>();
 
             builder.RegisterType<EfBrandDal>().As<IBrandDal>().SingleInstance();
@@ -32,6 +32,8 @@ namespace CarRental.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+            builder.RegisterType<EfCityDal>().As<ICityDal>().SingleInstance();
+            builder.RegisterType<EfLocationDal>().As<ILocationDal>().SingleInstance();
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
