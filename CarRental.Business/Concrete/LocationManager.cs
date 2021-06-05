@@ -1,4 +1,5 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.Constants;
 using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
@@ -15,29 +16,35 @@ namespace CarRental.Business.Concrete
             this._locationDal = locationDal;
         }
 
-        public IResult Add(Location entity)
+        public IResult Add(Location location)
         {
-            throw new System.NotImplementedException();
+            _locationDal.Add(location);
+
+            return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
-        public IResult Delete(Location entity)
+        public IResult Delete(Location location)
         {
-            throw new System.NotImplementedException();
+            _locationDal.Delete(location);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<Location>> GetAll()
         {
-            throw new System.NotImplementedException();
+            return new SuccessDataResult<List<Location>>(_locationDal.GetAll());
         }
 
         public IDataResult<Location> GetByID(int ID)
         {
-            throw new System.NotImplementedException();
+            return new SuccessDataResult<Location>(_locationDal.Get(loc => loc.ID == ID));
         }
 
-        public IResult Update(Location entity)
+        public IResult Update(Location location)
         {
-            throw new System.NotImplementedException();
+            _locationDal.Update(location);
+
+            return new SuccessResult(Messages.SuccesfullyUpdated);
         }
     }
 }
