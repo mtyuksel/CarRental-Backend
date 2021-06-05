@@ -1,5 +1,7 @@
 ﻿using CarRental.Business.Abstract;
+using CarRental.Business.Constants;
 using CarRental.Core.Utilities.Results;
+using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System.Collections.Generic;
 
@@ -7,36 +9,42 @@ namespace CarRental.Business.Concrete
 {
     public class CityManager : ICityService
     {
-        private ICityService _cityDal;
+        private ICityDal _cityDal;
 
-        public CityManager(ICityService cityDal)
+        public CityManager(ICityDal cityDal)
         {
             this._cityDal = cityDal;
         }
 
-        public IResult Add(City entity)
+        public IResult Add(City city)
         {
-            throw new System.NotImplementedException();
+            _cityDal.Add(city);
+
+            return new SuccessResult(Messages.SuccesfullyAdded);
         }
 
-        public IResult Delete(City entity)
+        public IResult Delete(City city)
         {
-            throw new System.NotImplementedException();
+            _cityDal.Delete(city);
+
+            return new SuccessResult(Messages.SuccesfullyDeleted);
         }
 
         public IDataResult<List<City>> GetAll()
         {
-            throw new System.NotImplementedException();
+            return new SuccessDataResult<List<City>>(_cityDal.GetAll());
         }
 
         public IDataResult<City> GetByID(int ID)
         {
-            throw new System.NotImplementedException();
+            return new SuccessDataResult<City>(_cityDal.Get(c => c.ID == ID));
         }
 
-        public IResult Update(City entity)
+        public IResult Update(City city)
         {
-            throw new System.NotImplementedException();
+            _cityDal.Update(city);
+
+            return new SuccessResult(Messages.SuccesfullyUpdated);
         }
     }
 }
