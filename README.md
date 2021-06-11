@@ -17,3 +17,10 @@ In addition to the backend project, the frontend part with Angular continues to 
 - IoC
 - Autofac
 - FluentValidation
+
+### Database Script
+
+You can access script of the database via the following link:
+- https://github.com/mtyuksel/CarRental-Backend/blob/master/CarRentalScript.sql
+
+
