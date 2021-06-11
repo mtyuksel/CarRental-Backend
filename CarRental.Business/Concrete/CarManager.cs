@@ -80,6 +80,12 @@ namespace CarRental.Business.Concrete
             return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails(uploadPath, defaultImageFullPath));
         }
 
+        public IDataResult<CarDetailDTO> GetCarDetailsByID(int ID, string uploadPath, string defaultImageFullPath)
+        {
+            return new SuccessDataResult<CarDetailDTO>(_carDal.GetCarDetailsByID(ID, uploadPath, defaultImageFullPath));
+        }
+
+
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)

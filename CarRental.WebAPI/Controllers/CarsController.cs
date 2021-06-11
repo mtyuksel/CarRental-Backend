@@ -31,6 +31,13 @@ namespace CarRental.WebAPI.Controllers
             return base.GetResponseByResultSuccess(base._tService.GetCarDetails(baseUrl + _uploadPath, baseUrl + _defaultImageFullPath));
         }
 
+        [HttpGet("getcardetailsbyid")]
+        public IActionResult GetCarDetailsByID(int ID)
+        {
+            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}";
+            return base.GetResponseByResultSuccess(base._tService.GetCarDetailsByID(ID, baseUrl + _uploadPath, baseUrl + _defaultImageFullPath));
+        }
+
         [HttpGet("getbylocation")]
         public IActionResult GetByLocation(int locationID)
         {

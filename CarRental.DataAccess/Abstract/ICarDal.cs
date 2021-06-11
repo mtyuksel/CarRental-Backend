@@ -9,6 +9,6 @@ namespace CarRental.DataAccess.Abstract
     {
         List<CarDetailDTO> GetCarDetails(string uploadPath, string defaultImageFullPath);
         List<CarDetailDTO> GetDetailedCarsByLocation(int locationID, string uploadPath, string defaultImageFullPath);
-
+        CarDetailDTO GetCarDetailsByID(int ID, string uploadPath, string defaultImageFullPath);
     }
 }

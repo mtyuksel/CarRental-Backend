@@ -11,5 +11,6 @@ namespace CarRental.Business.Abstract
         IDataResult<List<CarDetailDTO>> GetCarDetails(string uploadPath, string defaultImageFullPath);
         IDataResult<List<CarDetailDTO>> GetDetailedCarsByLocation(int locationID, string uploadPath, string defaultImageFullPath);
         IResult CheckIfCarExists(int ID);
+        IDataResult<CarDetailDTO> GetCarDetailsByID(int ID, string uploadPath, string defaultImageFullPath);
     }
 }
