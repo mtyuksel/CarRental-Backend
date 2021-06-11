@@ -25,7 +25,7 @@ namespace CarRental.Business.Concrete
             this._carService = carService;
         }
 
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage)
         {

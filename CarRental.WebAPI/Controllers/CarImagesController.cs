@@ -49,7 +49,7 @@ namespace CarRental.WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         public IActionResult Add([FromForm] FileUpload fileUpload)
         {
             var fileCheck = CheckIfFileUploaded(fileUpload.Files);
