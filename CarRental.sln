@@ -5,15 +5,17 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.MVCWebUI", "CarRental.MVCWebUI\CarRental.MVCWebUI.csproj", "{81A7D1D0-49B0-46EF-B554-AC4F9FAED28E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Core", "CarRental.Core\CarRental.Core.csproj", "{263A9E7A-39F8-4144-B887-17C2FF2D2D51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.Core", "CarRental.Core\CarRental.Core.csproj", "{263A9E7A-39F8-4144-B887-17C2FF2D2D51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Business", "CarRental.Business\CarRental.Business.csproj", "{9737CF27-31CD-43AC-9DE9-22F98DDD7A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.Business", "CarRental.Business\CarRental.Business.csproj", "{9737CF27-31CD-43AC-9DE9-22F98DDD7A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.DataAccess", "CarRental.DataAccess\CarRental.DataAccess.csproj", "{B29E0F47-DC3F-40A9-9299-F68EDA2C0C85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.DataAccess", "CarRental.DataAccess\CarRental.DataAccess.csproj", "{B29E0F47-DC3F-40A9-9299-F68EDA2C0C85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Entity", "CarRental.Entity\CarRental.Entity.csproj", "{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.Entity", "CarRental.Entity\CarRental.Entity.csproj", "{DD8C0C0D-90C2-4F42-B30F-D0180EF9008A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.WebAPI", "CarRental.WebAPI\CarRental.WebAPI.csproj", "{6C654EEC-7B58-4934-88DD-1A22BB5B071B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRental.WebAPI", "CarRental.WebAPI\CarRental.WebAPI.csproj", "{6C654EEC-7B58-4934-88DD-1A22BB5B071B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Business.Tests", "CarRental.Business.Tests\CarRental.Business.Tests.csproj", "{BF2BC098-F239-40EC-B917-7DA2AD63AA31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C654EEC-7B58-4934-88DD-1A22BB5B071B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF2BC098-F239-40EC-B917-7DA2AD63AA31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF2BC098-F239-40EC-B917-7DA2AD63AA31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF2BC098-F239-40EC-B917-7DA2AD63AA31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF2BC098-F239-40EC-B917-7DA2AD63AA31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
