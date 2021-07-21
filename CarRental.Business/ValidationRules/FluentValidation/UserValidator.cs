@@ -1,7 +1,5 @@
-﻿using CarRental.Business.Constants;
-using CarRental.Core.Entity.Concrete;
+﻿using CarRental.Core.Entity.Concrete;
 using FluentValidation;
-using System.Linq;
 
 namespace CarRental.Business.ValidationRules.FluentValidation
 {
@@ -16,8 +14,7 @@ namespace CarRental.Business.ValidationRules.FluentValidation
 
             RuleFor(u => u.Email).EmailAddress();
             RuleFor(u => u.FirstName).MinimumLength(2);
-            RuleFor(u => u.LastName).MinimumLength(2);
-            
+            RuleFor(u => u.LastName).MinimumLength(2);            
         }
     }
 }
