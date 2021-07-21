@@ -3,12 +3,14 @@ using CarRental.Core.Utilities.Results;
 using CarRental.DataAccess.Abstract;
 using CarRental.Entity.Concrete;
 using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("CarRental.Business.Tests")]
 namespace CarRental.Business.Logics
 {
     internal class CarLogics
     {
-        public static IResult CheckIfCarNotExists(ICarDal carDal ,Car car)
+        public static IResult CheckIfCarNotExists(ICarDal carDal, Car car)
         {
             var result = carDal.Get(c => c.BrandID == car.BrandID
            && c.ColorID == car.ColorID
@@ -17,8 +19,8 @@ namespace CarRental.Business.Logics
 
             return result == null ? new SuccessResult() : new ErrorResult(Messages.AlreadyExist("car"));
         }
-        
-        public static IResult CheckIfCarExists(ICarDal carDal ,Car car)
+
+        public static IResult CheckIfCarExists(ICarDal carDal, Car car)
         {
             var result = carDal.Get(c => c.BrandID == car.BrandID
            && c.ColorID == car.ColorID
