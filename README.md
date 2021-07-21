@@ -18,6 +18,7 @@ In addition to the backend project, the frontend part with Angular continues to 
 - IoC
 - Autofac
 - FluentValidation
+- Bogus
 
 ### Database Script
 
